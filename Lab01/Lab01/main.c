@@ -15,7 +15,6 @@ void signal_handler(int sig) {
 
 int main(int argc, char** argv) {
 	(void)signal(SIGINT, signal_handler);
-	(void)signal(SIGBREAK, signal_handler);
 
 	// Prompt user for number of items to generate
 	// Write the random numbers to file
