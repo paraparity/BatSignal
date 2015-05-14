@@ -23,23 +23,3 @@ int main(int argc, char** argv) {
 
 	return 0;
 }
-
-void merge_sort() {
-
-}
-
-void merge() {
-
-}
-
-void quick_sort() {
-
-}
-
-void partition() {
-
-}
-
-void radix_sort() {
-
-}
