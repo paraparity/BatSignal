@@ -10,6 +10,7 @@
 #include <signal.h>
 #include <stdint.h>
 #include <time.h>
+#include <string.h>
 
 #include "merge.h"
 #include "radix.h"
@@ -38,13 +39,16 @@ int main(int argc, char** argv) {
 	FILE* unsorted;
 	FILE* sorted;
 
+	char buffer[1024];
+	int32_t buffer_length = 1024;
+	size_t bytes_read = 0;
+
 	/* generate a seed for the random number generator */
-	time_t seed;
-	srand(time(&seed));
+	srand(time(NULL));
 
 	/* open sorted.txt and unsorted.txt */
-	unsorted = fopen("unsorted.txt", "w");
-	sorted = fopen("sorted.txt", "w");
+	unsorted = fopen("unsorted.txt", "w+");
+	sorted = fopen("sorted.txt", "w+");
 
 	/* ask the user for configuration values */
 	printf("Random numbers to generate: ");
@@ -68,8 +72,24 @@ int main(int argc, char** argv) {
 
 	fprintf(unsorted, "\n");	
 	fflush(unsorted);
-	fclose(unsorted);
+	
+	/* read in the numbers that were just output */
+	fseek(unsorted, 0, SEEK_SET);
+	bytes_read = fread(buffer, 1, buffer_length, unsorted);
+	buffer[bytes_read] = '\0';
+	
+	/* parse the numbers from the string */
+	int32_t index = 0;
+	for (char* token = strtok(buffer, " ");
+	     token != NULL && index < count;
+	     token = strtok(NULL, " "), ++index)
+	{
+		numbers[index] = atoi(token);
+	}
 
+	fclose(unsorted);	
+
+	/* sort the array */
 	switch (method)
 	{
 	case 1: merge_sort(numbers, count); break;
@@ -85,6 +105,8 @@ int main(int argc, char** argv) {
 	{
 		fprintf(sorted, "%d ", numbers[index]);
 	}
+
+	free(numbers);
 
 	fprintf(sorted, "\n");
 	fflush(sorted);
