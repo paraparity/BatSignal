@@ -78,6 +78,17 @@ int main(int argc, char** argv) {
 	
 	default: printf("Invalid sorting method specified.");
 	}
+
+	for (int32_t index = 0;
+	     index < count;
+	     ++index)
+	{
+		fprintf(sorted, "%d ", numbers[index]);
+	}
+
+	fprintf(sorted, "\n");
+	fflush(sorted);
+	fclose(sorted);
 	
 	return 0;
 }
