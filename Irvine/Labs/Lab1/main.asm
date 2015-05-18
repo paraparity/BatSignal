@@ -16,6 +16,8 @@ stdout   handle ?
 FILE_OPEN_ERROR   byte "Error - Failed to open input file.", 0dh, 0ah, 0
 FILE_READ_ERROR   byte "Error - Failed to read input file.", 0dh, 0ah, 0
 FILE_CREATE_ERROR byte "Error - Failed to create input file.", 0dh, 0ah, 0
+ENDL              byte 0dh, 0ah, 0
+SPACE             byte " ", 0
 
 .code
 sort proc
@@ -26,27 +28,49 @@ sort endp
 ;   ebx: end index
 ;   edx: string offset
 ; @return: integer value of string
-atoi proc
-    push ebp
-    mov ebp, esp
-    sub esp, 12
-    mov [ebp - 4], eax  ; local storage of start
-    mov [ebp - 8], ebx  ; local storage of end
-    mov [ebp - 12], edx ; local storage of string offset
-
+atoi proc start_index:dword, end_index:dword, string_offset:dword
     mov eax, 0   ; accumulator for integer value
-    mov ecx, ebx ; current index between start and end
+    mov ecx, end_index ; current index between start and end
+    dec ecx
 
 atoi_loop:
-    mov ebx, [ebp - 12]
-    add ebx, ecx
-    mov edx, [ebx]
+    mov edx, string_offset
+    mov ebx, 0
+    mov bl, [edx + ecx]
+    sub ebx, 30h
+
+    push eax ; accumulator value
+    push ebx ; integer value of current character
+
+    mov eax, end_index
+    dec eax
+    sub eax, ecx
+
+    ; multiply by ten
+    mov ebx, 10
+    mul ebx
+    cmp eax, 0
+    jne skip_location
+    mov eax, 1 ; this fixes issues with the ones place
+    call DumpRegs
+
+skip_location:
+    ; eax * ebx = value of character based upon location in string
+    pop ebx
+    mul ebx
+    mov ebx, eax
+
+    ; add character value to accumulator
+    pop eax
+    add eax, ebx
+    push eax
 
     dec ecx
-    cmp ecx, [ebp - 8]
+    cmp ecx, start_index
     jne atoi_loop
 
-    pop ebp
+    pop eax
+    ret
 atoi endp
 
 main proc
@@ -76,25 +100,50 @@ file_read:
     ; write contents of input file to console
     mov edx, offset message
     call WriteString
+    mov edx, offset ENDL
+    call WriteString
+
+    mov index, 0
+    mov saved, -1
+    mov len, 0
 
     ; parse through input
-    mov index, 0
-    mov saved, 0
 parse_loop:
-    mov ebx, offset message
-    add ebx, index
-    mov eax, [ebx]
-    cmp eax, " "
-    jne end_parse_loop
-    mov eax, saved
-    mov ebx, index
     mov edx, offset message
-    call atoi
     mov ebx, index
-    mov saved, ebx
+    mov eax, 0
+    mov al, [edx + ebx]
+    cmp eax, 20h
+    jne end_parse_loop
+    invoke atoi, saved, index, offset message
+
+    push eax ; value of integer
+
+    ; insert value into numbers array
+    mov eax, 4
+    mov ebx, len
+    mul ebx
+    mov ebx, eax
+
+    ; insert value into numbers
+    pop eax
+    mov edx, offset numbers
+    mov [edx + ebx], eax
+
+    ; increase length of numbers
+    mov eax, len
+    inc eax
+    mov len, eax
+
+    ; save index
+    mov eax, index
+    mov saved, eax
 
 end_parse_loop:
-    inc index
+    mov eax, index
+    inc eax
+    mov index, eax
+
     mov ebx, offset message
     add ebx, index
     mov eax, [ebx]
@@ -103,8 +152,22 @@ end_parse_loop:
 
     ; insert sorting here
 
+    mov ecx, 0
+
     ; write sorted input to console
-    mov edx, offset message
+print_output_loop:
+    mov edx, offset numbers
+    mov eax, [edx + ecx]
+    call WriteInt
+
+    mov edx, offset SPACE
+    call WriteString
+
+    inc ecx
+    cmp ecx, len
+    jne print_output_loop
+
+    mov edx, offset ENDL
     call WriteString
 
     ; close input file
