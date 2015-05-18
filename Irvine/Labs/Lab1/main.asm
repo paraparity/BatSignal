@@ -18,8 +18,61 @@ FILE_READ_ERROR   byte "Error - Failed to read input file.", 0dh, 0ah, 0
 FILE_CREATE_ERROR byte "Error - Failed to create input file.", 0dh, 0ah, 0
 
 .code
-sort proc
-sort endp
+
+; @registers
+;   eax: lower limit within buffer
+;	ebx: upper limit within buffer
+;	ecx: length of the buffer segment
+;   edx: buffer of integers
+; @return: sorted array
+;quicksort proc
+;	push eax
+;	sub eax, ebx
+;	cmp eax
+;	jge quit
+;
+;	push ebx
+;	push ecx
+;	push edx
+;
+;	call partition
+;	
+;	call quicksort
+;
+;	call quicksort
+;
+;quit:
+;quicksort endp
+
+; @registers
+;   eax: lower limit within buffer
+;	ebx: upper limit within buffer
+;	ecx: length of the buffer segment
+;   edx: buffer of integers
+; @return: sorted array
+;partition proc
+;	xor esi, esi
+;	xor edi, edi
+;	shr eax, 1	; Divide by 2 for naive pivot
+;	push eax
+;
+;sort:
+;	lower:
+;		mov eax, [esi]
+;		cmp 
+;	upper:
+;		
+;		cmp 
+;
+;	cmp esi, edi
+;	jge sort	
+;
+;	cmp ; i < j
+;	jge quit
+
+;quit
+;	pop eax
+;partition endp
 
 ; @registers
 ;   eax: start index
@@ -102,6 +155,11 @@ end_parse_loop:
     jne parse_loop
 
     ; insert sorting here
+;	xor eax, eax
+;	mov ebx, len
+;	mov ecx, ebx
+;	mov edx, numbers
+;	call quicksort
 
     ; write sorted input to console
     mov edx, offset message
