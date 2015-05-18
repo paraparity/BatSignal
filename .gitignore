@@ -3,4 +3,5 @@
 *.opensdf
 *.v12.suo
 
+cmake/
 Debug/

@@ -48,4 +48,3 @@ void merge_sort(int32_t* buffer, int32_t length) {
 		free(right);
 	}
 }
-

@@ -1,0 +1,211 @@
+Microsoft (R) Macro Assembler Version 11.00.61030.0	    03/20/15 19:06:19
+..\..\instructor\SolutionsProgExercises\chapt_4\short_exercises.asm  Page 1 - 1
+
+
+				; Solutions to Chapter 4 Review Questions
+
+				.386
+				.model flat,stdcall
+				.stack 4096
+				ExitProcess proto,dwExitCode:dword
+
+				; ********* Short-Answer Questions ************
+
+ 00000000			.code
+ 00000000			main proc
+
+				; Exercise 1
+ 00000000			.data
+ 00000000 8002			one word 8002h
+ 00000002 4321			two word 4321h
+ 00000000			.code
+ 00000000  BA 21348041			mov edx,21348041h
+ 00000005  0F BF 15			movsx edx,one		; (a) FFFF8002h
+	   00000000 R
+ 0000000C  0F BF 15			movsx edx,two		; (b) 00004321h
+	   00000002 R
+
+				; Exercise 2
+ 00000013  B8 1002FFFF			mov eax,1002FFFFh
+ 00000018  66| 40			inc	ax				; EAX = 10020000h
+					
+				; Exercise 3
+ 0000001A  B8 30020000			mov eax,30020000h
+ 0000001F  66| 48			dec ax				; EAX = 3002FFFFh
+
+				; Exercise 4
+ 00000021  B8 1002FFFF			mov eax,1002FFFFh
+ 00000026  66| F7 D8			neg ax				; EAX = 10020001h
+
+				; Exercise 5
+ 00000029  B0 01			mov	al,1
+ 0000002B  04 03			add	al,3			; PF = 0 (odd)
+
+				; Exercise 6
+ 0000002D  B8 00000005			mov eax,5
+ 00000032  83 E8 06			sub eax,6			; EAX = -1, SF = 1
+
+				; Exercise 7
+ 00000035  B0 FF			mov	al,-1
+ 00000037  04 82			add	al,130			; OV = 0, result is outside signed byte range
+
+				; Exercise 8
+ 00000004			.data
+ 00000004 00000000		dVal dword ?
+ 00000039			.code
+ 00000039  C7 05 00000004 R		mov	 dVal,12345678h
+	   12345678
+ 00000043  66| B8 0003			mov ax,3
+ 00000047  66| A3			mov WORD PTR dVal+1,ax
+	   00000005 R
+ 0000004D  A1 00000004 R		mov eax,dVal			; EAX = 12000378
+
+				; Exercise 9
+ 00000052  C7 05 00000004 R		mov	 dVal,12345678h
+	   12345678
+ 0000005C  66| A1			mov  ax,WORD PTR dVal+1
+	   00000005 R
+ 00000062  66| 83 C0 03			add  ax,3
+ 00000066  66| A3			mov  WORD PTR dVal,ax
+	   00000004 R
+ 0000006C  A1 00000004 R		mov  eax,dVal			; EAX = 12343459
+					
+				; ****** ALGORITHM WORKBENCH *******
+
+				; Exercise 1: Write sequence of MOV instructions that will exchange the 
+				; upper and lower words in a doubleword variable named three.
+ 00000008			.data
+ 00000008 12345678		three dword 12345678h
+ 00000071			.code
+ 00000071  66| A1			mov ax, word ptr three+2
+	   0000000A R
+ 00000077  66| 8B 15			mov dx, word ptr three
+	   00000008 R
+ 0000007E  66| A3			mov word ptr three,ax
+	   00000008 R
+ 00000084  66| 89 15			mov word ptr three+2,dx
+	   0000000A R
+					
+				; Exercise 2: Using the XCHG instruction no more than three times, 
+				; reorder the values in four 8-bit registers from the
+				; order A,B,C,D to the order B,C,D,A.
+
+ 0000008B  B0 0A			mov al,0Ah
+ 0000008D  B3 0B			mov bl,0Bh
+ 0000008F  B1 0C			mov cl,0Ch
+ 00000091  B2 0D			mov dl,0Dh
+ 00000093  86 C3			xchg al,bl
+ 00000095  86 D9			xchg bl,cl
+ 00000097  86 CA			xchg cl,dl
+
+				; Exercise 3: Determine if AL has even or odd parity.
+ 00000099  B0 75			mov	al,01110101b
+ 0000009B  04 00			add al,0			; PF = 0		(odd parity)
+
+				; Exercise 4: Set the overflow flag by adding two negative integers.
+ 0000009D  B0 80			mov	al,-128
+ 0000009F  04 FF			add	al,-1
+
+				; Exercise 5: Write two instructions that set the Zero, Carry, and Overflow flags.
+ 000000A1  B0 80			mov	al,80h
+ 000000A3  04 80			add	al,80h
+
+				; Exercise 6: Set the Carry flag using subtraction
+ 000000A5  B0 01			mov	al,1
+ 000000A7  2C 02			sub	al,2
+
+				; Exercise 7: Implement the following arithmetic expression:
+				;			  EAX = -val2 + 7 - val3 + val1
+				; Write down the  value of EAX after each instruction.
+ 0000000C			.data
+ 0000000C 00000008		val1 SDWORD 8
+ 00000010 FFFFFFF1		val2 SDWORD -15
+ 00000014 00000014		val3 SDWORD 20
+ 000000A9			.code
+					; -val2 + 7
+ 000000A9  A1 00000010 R		mov	eax,val2			; EAX = -15
+ 000000AE  F7 D8			neg	eax					; EAX = +15
+ 000000B0  83 C0 07			add	eax,7				; EAX =  22
+					; - val3
+ 000000B3  2B 05 00000014 R		sub	eax,val3			; EAX = 2
+					; + val1
+ 000000B9  03 05 0000000C R		add	eax,val1			; EAX = 10
+
+				; Exercise 8: Write a loop that iterates through a doubleword 
+				; array and calculates the sum of its elements using a scale factor 
+				; with indexed addressing.
+
+ 00000018			.data
+ 00000018 00000010		myArray dword 10h,20h,30h,40h,50h,60h
+	   00000020
+	   00000030
+	   00000040
+	   00000050
+	   00000060
+ = 00000006			count = LENGTHOF myArray
+				; sum is 150h
+ 000000BF			.code
+ 000000BF  BE 00000000			mov	 esi,0
+ 000000C4  B8 00000000			mov	 eax,0
+ 000000C9  B9 00000006			mov  ecx,count
+
+ 000000CE  03 04 B5		L1:	add	 eax,myArray[esi * TYPE myArray]
+	   00000018 R
+ 000000D5  46				inc	 esi
+ 000000D6  E2 F6			loop L1
+
+					invoke ExitProcess,0
+ 000000D8  6A 00	   *	    push   +000000000h
+ 000000DA  E8 00000000 E   *	    call   ExitProcess
+ 000000DF			main endp
+				end main
+Microsoft (R) Macro Assembler Version 11.00.61030.0	    03/20/15 19:06:19
+..\..\instructor\SolutionsProgExercises\chapt_4\short_exercises.asm  Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 DWord	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000030 DWord	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 000000DF DWord	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 000000DF Public STDCALL
+  L1 . . . . . . . . . . . . . .	L Near	 000000CE _TEXT	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+count  . . . . . . . . . . . . .	Number	 00000006h   
+dVal . . . . . . . . . . . . . .	DWord	 00000004 _DATA	
+myArray  . . . . . . . . . . . .	DWord	 00000018 _DATA	
+one  . . . . . . . . . . . . . .	Word	 00000000 _DATA	
+three  . . . . . . . . . . . . .	DWord	 00000008 _DATA	
+two  . . . . . . . . . . . . . .	Word	 00000002 _DATA	
+val1 . . . . . . . . . . . . . .	DWord	 0000000C _DATA	
+val2 . . . . . . . . . . . . . .	DWord	 00000010 _DATA	
+val3 . . . . . . . . . . . . . .	DWord	 00000014 _DATA	
+
+	   0 Warnings
+	   0 Errors

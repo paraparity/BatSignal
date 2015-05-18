@@ -6,6 +6,7 @@
 
 void merge_sort(int32_t* buffer, int32_t length);
 
-void merge(int32_t* source, int32_t* left, int32_t* right);
+void merge(int32_t* buffer, int32_t* left, int32_t *right,
+	int32_t left_len, int32_t right_len);
 
 #endif
