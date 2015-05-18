@@ -34,7 +34,7 @@ file_opened:
     ; read input file into string
     mov edx, offset message
     mov ecx, capacity
-    invoke ReadFromFile
+    call ReadFromFile
 
     jnc file_read
     mov edx, offset FILE_READ_ERROR
@@ -42,17 +42,9 @@ file_opened:
     jmp quit
 
 file_read:
-    ; get handle to stdout
-    invoke GetStdHandle, STD_OUTPUT_HANDLE
-    mov stdout, eax
-
-    ; write contents of input file to stdout
-    invoke WriteConsole,
-        stdout,
-        addr message,
-        len,
-        addr written,
-        0
+    ; write contents of input file to console
+    mov edx, offset message
+    call WriteString
 
     ; insert sorting here
 
