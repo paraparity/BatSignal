@@ -4,6 +4,7 @@
 // Authors:		Bryan Young, Joe Moraal, Zach Thornton		
 // Description:		Prompts the user for a number of random numbers to generate, 
 //			then performs sorting operations on that data (merge, quick, radix)
+#define _CRT_SECURE_NO_WARNINGS 1
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,6 +16,8 @@
 #include "merge.h"
 #include "radix.h"
 #include "quick.h"
+
+#include "merge.h"
 
 void signal_handler(int sig) {
 	printf("\b\bExiting...\n");

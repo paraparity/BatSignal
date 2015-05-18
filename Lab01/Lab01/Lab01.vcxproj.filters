@@ -18,5 +18,25 @@
     <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="merge.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="quick.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="radix.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="merge.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="quick.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="radix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
