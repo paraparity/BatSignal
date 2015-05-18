@@ -10,8 +10,9 @@ capacity dword  256
 file     handle ?
 stdout   handle ?
 
-FILE_OPEN_ERROR byte "Error - Failed to open input file.", 0dh, 0ah, 0
-FILE_READ_ERROR byte "Error - Failed to read input file.", 0dh, 0ah, 0
+FILE_OPEN_ERROR   byte "Error - Failed to open input file.", 0dh, 0ah, 0
+FILE_READ_ERROR   byte "Error - Failed to read input file.", 0dh, 0ah, 0
+FILE_CREATE_ERROR byte "Error - Failed to create input file.", 0dh, 0ah, 0
 
 .code
 sort proc
