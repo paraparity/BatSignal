@@ -79,6 +79,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.c" />
+    <ClCompile Include="merge.c" />
+    <ClCompile Include="quick.c" />
+    <ClCompile Include="radix.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="merge.h" />
+    <ClInclude Include="quick.h" />
+    <ClInclude Include="radix.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

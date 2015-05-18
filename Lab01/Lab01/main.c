@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <signal.h>
 
+#include "merge.h"
+
 void signal_handler(int sig) {
 	printf("\b\bExiting...\n");
 	exit(0);
@@ -15,32 +17,6 @@ void signal_handler(int sig) {
 
 int main(int argc, char** argv) {
 	(void)signal(SIGINT, signal_handler);
-	(void)signal(SIGBREAK, signal_handler);
-
-	// Prompt user for number of items to generate
-	// Write the random numbers to file
-	// Prompt the user for the method of sort they want to use
-	// Sort the file
 
 	return 0;
-}
-
-void merge_sort() {
-
-}
-
-void merge() {
-
-}
-
-void quick_sort() {
-
-}
-
-void partition() {
-
-}
-
-void radix_sort() {
-
 }
