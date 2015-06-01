@@ -3,6 +3,14 @@ Documents the installation process for batman and RPi node network configuration
 piome-network is an init.d startup script which will need to be copied to the /etc/init.d/ directory and given the execute privileges. 
 net_interfaces is a configuration file which needs to be moved to the /etc/network/ directory and renamed "interfaces".
 
+Batman network protocol:
+    You'll need to install the BATMAN advanced network protocol on your RPi for the following scripts to do much. 
+    Copy the installed BATMAN kernel as follows:
+
+    >cp <BATMAN_kernel> /lib/modules/<X.X.XX+>/kernel/net/batman-adv
+
+    X.X.XX+ is your kernel version number information.
+
 piome-network script setup:
     >cp piome-network /etc/init.d/bat-signal
     >sudo chmod +x /etc/init.d/bat-signal
