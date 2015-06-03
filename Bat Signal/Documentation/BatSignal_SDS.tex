@@ -1,0 +1,116 @@
+\documentclass[11pt,a4paper]{article}
+
+\begin{document}
+\author{Bryan Young\\
+	\texttt{youngb2@wit.edu},\\
+	Department of Computer Science,\\
+	Wentworth Institute of Technology,}
+\title{Software Design Specification}
+\date{\today{}}
+\maketitle
+\newpage
+
+\tableofcontents
+\newpage
+
+\section{Introduction}
+\subsection{Purpose}
+\textit{This section should contain a full description of the main objectives of the SDS document.}
+
+\subsection{Scope of Development}
+\textit{This will be similar to what was written in the SRS.}
+
+\subsection{Defenitions, Acronyms, and Abbreviations}
+\textit{This should be the same as what is in the SRS with any necessary additions. }
+
+\subsection{References}
+\textit{This section will include more technical books and documents than was probably included in the SRS. At a minimum, this should reference the SRS! \newline\newline
+If you reference a web site, you should include references to the exact pages that you used, not just to the name of the site. For example, www.yahoo.com is not an ok reference as this does not specify exactly which page(s) was/were used.}
+
+\subsection{Major Software Requirements}
+
+\subsection{Design Constraints and Limitations}
+\subsubsection{Design Constraints}
+
+\subsubsection{Limitations}
+
+\subsection{Changest to Requirements}
+\textit{It is likely that you will have decided to add/change/delete various requirements. If this were the real world, you would need to get all sorts of approvals to do this. But, what I would like you to do here is (after discussing with me your specific modifications to your SRS to get my approval) to list all of your requirements modifications, along with a reason that justifies that modification. In this section, you should list: 
+\begin{itemize}
+	\item{The original requirement (or write none if this is a new requirement)}
+	\item{the change to that requirement}
+	\item{the rational. (reason to why? How?)}
+\end{itemize}
+}
+
+\subsection{Overview of Document}
+\textit{This should include a short description of how the rest of the SDS is organized and what can be found in the rest of the document. This is not simply a table of contents. Try to motivate the various parts!}
+
+\section{System Overview}
+
+\section{Data Design}
+\textit{
+\begin{itemize}
+	\item{Data Objects and resultant data structures}
+	\item{File and database structures}
+	\begin{itemize}
+		\item{external file structure}
+		\item{global data}
+		\item{file and data cross references}
+	\end{itemize}
+\end{itemize}
+}
+
+\section{System Architecture}
+\textit{This section is very important! This is where you will focus much of your energy. This should give a good view of exactly how your solution is to be organized. I would suggest using the text as a guide in helping you to develop your system architecture diagrams. The diagram(s) should be included, either in this section or as a referenced Appendix at the end of your SDS. 
+\begin{itemize}
+	\item{Overview of Modules \ Components \newline\newline
+	This subsection will introduce the various components and subsystems. You do not need to be too specific. You wish to give each module's name and a brief description of its functionality (what it does). }
+	\item{Structure and Relationships \newline\newline
+	A structure chart of some sort can be useful here. If you build the architecture design as described in Chapter 14, you may wish to include it here. There should be explanatory text to help the reader understand your charts/diagrams.}
+\end{itemize}
+}
+
+\section{Component Design}
+\textit{Detailed description of components (This is your procedural design.)}
+
+\subsection{Component Description Template}
+\textit{List the points you will use in subsections 4.2-4.n. For your recollection, a template is a form with none of the fields filled out. Below I include a sample template. The purpose of a template is so that I can see the format of how each of your modules will be described. \newline\newline
+Give a label and briefly explain the purpose of that point. Use a table or bullet list to make this presentation clear. You may simply decide to use the suggested template given below. \newline\newline
+If part of the template is not applicable for a given module, then mark it N/A rather than omitting it. \newline\newline
+Each component described in Part 4 of the SDS must be thoroughly described. The template given below suggests a reasonable structure for the information to be given for each component. The specific information depends to a great extent on the design approach, so your team must customize and describe the template in section 4.1 of your SDS.}
+
+\subsubsection{Identification}
+The unique name for the component and the location of the component in the system. (You may want to include a reference to which part of the architecture diagram this component belongs.)
+
+\subsubsection{Type}
+A module, a subprogram, a data file, a control procedure, a class, etc.
+
+\subsubsection{Purpose}
+Function and performance requirements implemented by the design component, including derived requirements. Derived requirements are not explicitly stated in the SRS, but are implied or adjunct to formally stated SDS requirements. This is where you explain the connection of this component to some requirement(s) as specified in the SRS.
+
+\subsubsection{Function}
+What the component does, the transformation process, the specific inputs that are processed, the algorithms that are used, the outputs that are produced, where the data items are stored, and which data items are modified.
+
+\subsubsection{Subordinates/Modules Used}
+The internal structure of the component, the constituents of the component, and the functional requirements satisfied by each part.
+
+\subsubsection{Dependencies}
+How the component's function and performance relate to other components. How this component is used by other components. Include the other components that use this component. Interaction details such as timing, interaction conditions (such as order of execution and data sharing), and responsibility for creation, duplication, use, storage, and elimination of components.
+
+\subsubsection{Resources}
+A complete description of all resources (hardware or software) external to the component but required to carry out its functions. Some examples are CPU execution time, memory (primary, secondary, or archival), buffers, I/O channels, plotters, printers, math libraries, hardware registers, interrupt structures, and system services.
+
+\subsubsection{Processing}
+The full description of the functions presented in the Function subsection. Pseudo-code may be used to document algorithms, equations, and logic.
+
+\subsubsection{Data}
+For the data internal to the component, describes the representation method, initial values, use, semantics, and format. This information will probably be recorded in the data dictionary.
+
+\section{Interface Design}
+\textit{Here, you will present the modified description of your panels/frames/pages. You will want to include some discussion for each one. It is fine to refer the reader to the user's guide for interfaces that have not changed. If you choose to refer the reader to the user's guide, you should probably give me a zipped version of the user's guide so that I can put it out on the web, and your evaluators may access it.}
+
+\appendix
+\section{Appendix}
+
+\end{document}
