@@ -1,4 +1,4 @@
-\documentclass[11pt,a4paper]{article}
+\documentclass[10pt,a4paper]{article}
 
 \author{Bryan Young}
 \title{BatSignal:\\Software Requirements Specification}
@@ -14,7 +14,7 @@
 \section{Introduction}
 \subsection{Purpose}
 %Full description of the main objectives of the SRS.
-\textnormal{The Software Requirements Specification for the BatSignal system describes in detail the software components running on and operating the distributed sensor network.}
+\textnormal{The Software Requirements Specification for the BatSignal system describes in detail the software components running on and operating the distributed sensor network. This specification will elaborate the necessary performance thresholds and functionality requirements the BatSignal distributed sensor network is expected to meet.}
 
 \subsection{Scope of Development}
 %Identifies the product to be developed by name and function, lists limitations(if any), highlights distinct features, lists benefits as clearly and precisely as possible. This will provide the basis for the brief description of your product.
@@ -28,7 +28,7 @@
 	\item{Command and Control Driver}
 	\begin{enumerate}
 		\item{Listen on the sensor node network}
-		\item{Communicate with Google APIs}
+		\item{Communicate with Google APIs (Application Programming Interface)}
 		\item{Alert administrators when certain conditions are met}
 	\end{enumerate}
 \end{enumerate}
@@ -40,6 +40,7 @@
 \textnormal{
 \begin{center}
 \begin{tabular}{ |l|l| }
+	% Defines acronyms, abbreviations, or names pertaining specifically to the BatSignal software.
 	\hline
 	\multicolumn{2}{|c|}{Application Specific Definitions} \\
 	\hline
@@ -55,6 +56,7 @@
 \textnormal{
 \begin{center}
 \begin{tabular}{ |l|l| }
+	% Defines acronyms, abbreviations, or names pertaining third-party devices, applications, or organizations.
 	\hline
 	\multicolumn{2}{|c|}{Industry Definitions} \\
 	\hline
@@ -73,12 +75,13 @@
 \textnormal{
 \begin{center}
 \begin{tabular}{ |l|l| }
+	% Defines acronyms, abbreviations, or names pertaining to technologies, tools, and other non-application or industry terms.
 	\hline
 	\multicolumn{2}{|c|}{Technical Definitions} \\
 	\hline
 	% Acronym & Definition \\
 	% Order alphabetically
-	ACK & Definition \\
+	API & Application Programming Interface \\
 	\hline
 \end{tabular}
 \end{center}
@@ -89,23 +92,24 @@
 \newline\newline Use proper and complete reference notation. If this section becomes longer than one page, move the references to an Appendix and provide a pointer in this section.}
 
 \subsection{Overview}
-\textit{A short description of how the rest of the SRS is organized and what can be found in the rest of the document.}
+% A short description of how the rest of the SRS is organized and what can be found in the rest of the document.
+\textnormal{The following sections will describe the general aspects of the project before listing the specific software requirements. }
 
 \section{General Description}
 \subsection{User Characteristics}
-\textit{This section considers the needs of the anticipated users. \newline\newline List critical characteristics of the system's human interfaces based on the anticipated users' characteristics.
-}
+%This section considers the needs of the anticipated users. List critical characteristics of the system's human interfaces based on the anticipated users' characteristics.
+\textnormal{The BatSignal distributed sensor network interacts with both administrative medical staff and elderly patients. The system will send email alerts to a designated set of medical staff when it detects emergency events. The system will passively interact with elderly patients by recording audio captures and will require no direct interaction.}
 
 \subsection{Product Perspective}
-\textit{
-\begin{itemize}
-	\item{If the product is stand-alone, give the relationship to other products.}
-	\item{If the product is part of a larger product, then identify its interface to the other products.}
-	\item{Identify the product's external interfaces with its environment.}
-	\item{If the product uses existing hardware, describe the hardware.}
-	\item{If the product requires new hardware, give a detailed explanation of the hardware.}
-\end{itemize}
-}
+% If the product is stand-alone, give the relationship to other products.
+% If the product is part of a larger product, then identify its interface to the other products.
+% Identify the product's external interfaces with its environment.
+% If the product uses existing hardware, describe the hardware.
+% If the product requires new hardware, give a detailed explanation of the hardware.
+\textnormal{The BatSignal distributed sensor network is broken down into two primary components: the controller node and the sensor node. \\\\
+The controller is responsible for communicating with third-party APIs, processing the text of converted audio captures, and dispatching SMTP alerts. \\\\
+The sensor node responsible for capturing audio input and sending captures to the controller.}
+
 
 \subsection{Overview of Functional Requirements}
 \textit{Provide a short description of the functions to be performed by the software, i.e. what the product should do. This description must be in a form understandable to users, operators, and clients. The detailed requirements specifications are left to Section 3.2 in this document. If you number the Functional Requirements in a systematic manner, it will be easier for you to refer to them in Section 3.2 of the SRS, in the design document you will write later, and in the testing document (also to be written later). This should not be design-oriented, a common mistake.}
@@ -147,6 +151,12 @@ This may include aspects such as narrative to describe the setting, sketches to 
 
 \subsection{Non-Functional Requirements}
 \subsubsection{Performance}
+\begin{enumerate}
+	\item{\textbf{BatSignal Alert Dispatch Throughput Time}} \\
+	The BatSignal distributed sensor network should have a throughput time of no more than 5000 $\mu$s. This is the time from audio capture to alert dispatch in the case of a positive hit for an emergency keyword.
+	\item{\textbf{Sensitivity (True Positive) and Specificity (True Negative)}} \\
+	Both the sensitivity and specificity of the system should be above 90\% accuracy.
+\end{enumerate}
 
 \subsubsection{Reliability}
 
