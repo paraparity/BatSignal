@@ -1,0 +1,11 @@
+To install v8 on the RaspberryPi 2 follow the instructions here:
+http://www.mccarroll.net/blog/v8_pi2/index.html
+
+The only difference is that the results should be in the directories:
+	/opt/depot_tools &
+	/opt/v8
+
+In order to do this you may have to change the permissions on your /opt directory.
+To do so run the command "sudo chmod ugo+rw /opt".
+
+The reason for installing v8 is so that we can interact with the javascript APIs that Google provides for it's "Web Speech API".  This API will allow us to take audio input and use Google to turn it to speech and get the result back.
