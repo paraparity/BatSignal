@@ -31,7 +31,8 @@
 
 \subsection{Project Executive Summary}
 % This section provides a description of the project from a management perspective and an overview of the framework within which the conceptual system design was prepared.  If appropriate, include the information discussed in the subsequent sections in the summary.
-\textnormal{BatSignal is a distributed sensor network designed to collect audio and analyze the captures for ques indicating distress or emergency, and to alert staff of such situations. The system is designed to be physically scaled according to the needs of the location of installation.}
+\textnormal{The BatSignal network is designed to function as a rapid response alert system capable of identifying, by sensor ID, situations of distress or emergency. The system passively collects audio captures from the sensors and analyzes them for keywords or phrases. When the system detects a matching keyword or phrase it dispatches an email to a list of administrators and displays a notification on the system console. \\
+The system is designed to be physically scaled according to the needs of the location of installation. Controller nodes are installed at or near administrative areas with sensor nodes installed in patient rooms, inhabited spaces, common areas, etc. Communication propagate through the BatSignal mesh network allowing nodes to communicate with the controller despite physical distance.}
 
 \subsubsection{System Overview}
 % This section describes the system in narrative form using non-technical terms.  It should provide a high-level system architecture diagram showing a subsystem breakout of the system, if applicable.  The high-level system architecture or subsystem diagrams should, if applicable, show interfaces to external systems.  Supply a high-level context diagram for the system and subsystems, if applicable.  Refer to the requirements trace ability matrix (RTM) in the Functional Requirements Document (FRD), to identify the allocation of the functional requirements into this design document.
@@ -92,9 +93,13 @@
 
 \subsection{Document Organization}
 % This section describes the organization of the Systems Design Document.
+\textnormal{In the following sections this document will define the overall system architecture followed by more detailed hardware and software architectures. }
 
 \section{System Architecture}
 % In this section, describe the system and/or subsystem(s) architecture for the project.  References to external entities should be minimal, as they will be described in detail in Section 6, External Interfaces.
+\begin{center}
+	\includegraphics[width=\textwidth, keepaspectratio=true]{Graphics/SystemArchitecture.png}
+\end{center}
 
 \subsection{System Hardware Architecture}
 % In this section, describe the overall system hardware and organization.  Include a list of hardware components (with a brief description of each item) and diagrams showing the connectivity between the components.  If appropriate, use subsections to address each subsystem.
@@ -102,9 +107,7 @@
 \subsection{System Software Architecture}
 % In this section, describe the overall system software and organization.  Include a list of software modules (this could include functions, subroutines, or classes), computer languages, and programming computer-aided software engineering tools (with a brief description of the function of each item).  Use structured organization diagrams/object-oriented diagrams that show the various segmentation levels down to the lowest level.  All features on the diagrams should have reference numbers and names.  Include a narrative that expands on and enhances the understanding of the functional breakdown.  If appropriate, use subsections to address each module.
 % Note: The diagrams should map to the FRD data flow diagrams, providing the physical process and data flow related to the FRD logical process and data flow.
-\begin{center}
-	\includegraphics[width=\textwidth, keepaspectratio=true]{Graphics/SystemArchitecture.png}
-\end{center}
+
 
 \subsection{Internal Communications Architecture}
 % In this section, describe the overall communications within the system; for example, LANs, buses, etc.  Include the communications architecture(s) being implemented, such as X.25, Token Ring, etc.  Provide a diagram depicting the communications path(s) between the system and subsystem modules.  If appropriate, use subsections to address each architecture being employed.
@@ -112,6 +115,7 @@
 
 \section{Human-Machine Interface}
 % This section provides the detailed design of the system and subsystem inputs and outputs relative to the user/operator.  Any additional information may be added to this section and may be organized according to whatever structure best presents the operator input and output designs.  Depending on the particular nature of the project, it may be appropriate to repeat these sections at both the subsystem and design module levels.  Additional information may be added to the subsections if the suggested lists are inadequate to describe the project inputs and outputs.
+\textnormal{The BatSignal Distributed sensor network expects }
 
 \subsection{Inputs}
 %This section is a description of the input media used by the operator for providing information to the system; show a mapping to the high-level data flows described in Section 1 .2.1, System Overview.  For example, data entry screens, optical character readers, bar scanners, etc.  If appropriate, the input record types, file structures, and database structures provided in Section 3, File and Database Design, may be referenced.  Include data element definitions, or refer to the data dictionary.
@@ -184,14 +188,33 @@
 \end{center}
 }
 
-\subsubsection{Wi Pi Module}
+\subsubsection{Wi-Pi WLAN Module}
 \textnormal{
 \begin{center}
 \begin{tabularx}{\textwidth}{ | l | X | }
 	\hline
-	\multicolumn{2}{ | c | }{\textbf{Wi Pi Module Specifications}} \\
+	\multicolumn{2}{ | c | }{\textbf{Wi-Pi WLAN Module Specifications}} \\
 	\hline
-		& \\
+	Cost: 				& \$15.52 \\
+	\hline
+	Physical Interface: & USB 2.0 \\
+	\hline
+	Wireless Standards: & IEEE 802.11n \\ 
+						& Backward compatible with IEEE 802.11g and IEEE 802.11b \\
+	\hline
+	Transmission Speed: & 11b: 1/2/5.5/11 Mbps \\
+						& 11g: 6/9/12/18/24/36/48/54 Mbps \\
+						& 11n: up to 150 Mbps \\
+	\hline
+	Frequency Range: 	& 2.4 to 2.4835 GHz \\
+	\hline
+	Working Channel: 	& 1 to 13 \\
+	\hline
+	Transmit Power: 	& 20dBm (max) \\
+	\hline
+	Security Features: 	& WPA-PSK/WPA2-PSK \\
+						& WPA/WPA2 \\
+						& 64/128/152 bit WEP Encryption \\
 	\hline
 \end{tabularx}
 \end{center}
