@@ -114,6 +114,9 @@ Python modules installed on the control node passively receives the sensor's dat
 \subsection{System Software Architecture}
 % In this section, describe the overall system software and organization.  Include a list of software modules (this could include functions, subroutines, or classes), computer languages, and programming computer-aided software engineering tools (with a brief description of the function of each item).  Use structured organization diagrams/object-oriented diagrams that show the various segmentation levels down to the lowest level.  All features on the diagrams should have reference numbers and names.  Include a narrative that expands on and enhances the understanding of the functional breakdown.  If appropriate, use subsections to address each module.
 % Note: The diagrams should map to the FRD data flow diagrams, providing the physical process and data flow related to the FRD logical process and data flow.
+\textnormal{The system has two types of nodes in the mesh network.  The first type of node is a sensor, and the second is the control node.  There is only one control node per complete network.  The sensor nodes and control node run different python modules which dictate their behavior. \\
+Sensor nodes passively wait for input from the attached microphone.  Using python's speech recognition library the audio input is converted into text.  It is then sent across the mesh network to the control node. \\
+The control node passively waits for input from the sensor nodes.  Upon receiving a message it searches the text for help phrases that are defined in a configuration file and read upon startup.  Upon finding a help phrase an email is composed with the full text of the message and sent to the administrators.  The administrators are defined in a configuration file and read upon startup.  The control node is the only node connected to the internet.}
 
 
 \subsection{Internal Communications Architecture}
