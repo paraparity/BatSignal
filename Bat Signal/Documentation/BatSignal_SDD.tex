@@ -31,14 +31,14 @@ This document describes the hardware and software components of the BatSignal di
 
 \subsection{Project Executive Summary}
 % This section provides a description of the project from a management perspective and an overview of the framework within which the conceptual system design was prepared.  If appropriate, include the information discussed in the subsequent sections in the summary.
-The system is designed as a rapid response alert system capable of identifying emergencies and reporting their location. The system passively captures audio from the sensors and analyzes it for keywords or phrases. When the system detects a match it dispatches an email to a list of administrators and displays a notification on the system console. \\\\
-The system is designed to be scalable according to the needs of the location of installation. Control nodes are installed at or near administrative areas with sensor nodes installed in patient rooms, inhabited spaces, common areas, etc. Messages propagate through the BatSignal mesh network allowing nodes to communicate with the controller over a distance.
+The system is designed as a rapid response alert system capable of identifying emergencies and reporting their location. The system passively captures audio from the sensors and analyzes it for keywords or phrases. When the system detects a match it dispatches an email to a list of administrators and displays a notification on the administration console. \\\\
+The system is designed to be scalable according to the needs of the location of installation. Control nodes are installed at or near administrative areas with sensor nodes installed in patient rooms, inhabited spaces, common areas, etc. Messages propagate through the BatSignal mesh network allowing nodes to communicate with the control node despite the often significant distance between them.
 
 \subsubsection{System Overview}
 % This section describes the system in narrative form using non-technical terms.  It should provide a high-level system architecture diagram showing a subsystem breakout of the system, if applicable.  The high-level system architecture or subsystem diagrams should, if applicable, show interfaces to external systems.  Supply a high-level context diagram for the system and subsystems, if applicable.  Refer to the requirements trace ability matrix (RTM) in the Functional Requirements Document (FRD), to identify the allocation of the functional requirements into this design document.
-The system is divided into two types of nodes.  The nodes form a mesh network that relays data from the first type of nodes called sensors to the second type of node called the controller node. \\\\
-Python modules installed on the sensors passively read input from a microphone. The input from the microphone is fed into python's speech recognition module. The input is then sent to the control node over the mesh network either as plain text or compressed plain text. \\\\
-Python modules installed on the control node passively receives the sensor's data.  It then parses through the text looking for control phrases.  Upon recognizing a control phrase an email is sent to a list of administrators containing the full triggering text input.
+The system is divided into two types of nodes.  The nodes form a mesh network that relays data from the first type of nodes called sensors to the second type of node called the control node. \\\\
+Python modules installed on the sensor nodes passively read input from a microphone. The input from the microphone is fed into python's speech recognition module. The audio input is then sent to the control node over the mesh network either as plain text or compressed plain text. \\\\
+Python modules installed on the control node passively receive the sensor's data.  It then parses through the text looking for control phrases.  Upon recognizing a control phrase an email is sent to a list of administrators containing the full triggering text input.
 \begin{figure}[h!]
 	\centering
 		\includegraphics[scale=0.75, keepaspectratio=true]{Graphics/SimpleOverview.png}
@@ -52,13 +52,13 @@ The BatSignal distributed sensor network will consist of numerous Raspberry Pi b
 	\item{\textbf{Maximum Node Separation Distance -}}
 		The nodes must be close enough to communicate effectively with one another in order to form a reliable mesh network. This maximum effective communication distance relies on the capabilities of the Wi-Pi WLAN module and the B.A.T.M.A.N. routing protocol. This distance has not been determined yet.	The communication range is also affected by physical objects in the installation environment, which may reduce the base measurement during implementation.
 	\item{\textbf{Sensor per Controller Ratio -}}
-		Due to the physical limitations of the controller node's processing power and each Wi-Pi WLAN module's transmition rate, coupled with the mesh network's maximal flow limits, there is a finite number of sensors that should be paired with any single controller node. This ratio has not been determined yet.
+		Due to the physical limitations of the control node's processing power and each Wi-Pi WLAN module's transmission rate, coupled with the mesh network's maximal flow limits, there is a finite number of sensors that should be paired with any single control node. This ratio has not been determined yet.
 \end{itemize}
 
 
 \subsubsection{Future Contingencies}
-%This section describes any contingencies that might arise in the design of the system that may change the development direction.  Possibilities include lack of interface agreements with outside agencies or unstable architectures at the time this document is produced.  Address any possible workarounds or alternative plans.
-The BatSignal distributed sensor network relies heavily on the ability for nodes to be physically separate from one another, and still networked to the Internet. This is achieved by leveraging the B.A.T.M.A.N. routing protocol. Should the B.A.T.M.A.N. protocol be inadequate for wireless communication however, alternatives such as  project Meshnet may prove more usable. \\ 
+% This section describes any contingencies that might arise in the design of the system that may change the development direction.  Possibilities include lack of interface agreements with outside agencies or unstable architectures at the time this document is produced.  Address any possible workarounds or alternative plans.
+The BatSignal distributed sensor network relies heavily on the ability for nodes to be physically separate from one another, and still networked to the Internet. This is achieved by leveraging the B.A.T.M.A.N. routing protocol. Should the B.A.T.M.A.N. protocol be inadequate for wireless communication however, alternatives such as project Meshnet may prove more usable. \\\\
 BatSignal also relies heavily on the ability to convert audio captures to a textual representation. The project leverages Google speech-to-text APIs to perform text conversion. The reliability and feasibility of these APIs may require better alternatives. No such alternatives have yet been identified as contingencies.
 
 \subsection{Points of Contact}
@@ -72,6 +72,10 @@ BatSignal also relies heavily on the ability to convert audio captures to a text
 		\textnormal{https://www.raspberrypi.org/}
 	\item{\textbf{B.A.T.M.A.N. Routing Protocol:}}
 		\textnormal{http://www.open-mesh.org/projects/batman-adv}
+	\item{\textbf{Python Speech Recognition Library:}}
+		\textnormal{https://pypi.python.org/pypi/SpeechRecognition/}
+	\item{\textbf{Python JSON Encoder and Decoder:}}
+		\textnormal{https://docs.python.org/3.3/library/json.html}
 \end{itemize}
 
 \subsection{Glossary}
@@ -97,7 +101,7 @@ The glossary provides expansions for acronyms and abbreviations which appear wit
 	\hline
 	CPU		& Central Processing Unit \\
 	GPIO	& General Purpose Input Output \\
-	GPU		& Graphical Processing Unit \\
+	GPU		& Graphics Processing Unit \\
 	MHz		& Mega-Hertz \\
 	SoC		& System on a Chip \\
 	USB		& Universal Serial Bus \\
@@ -134,18 +138,18 @@ In the following sections this document will define the overall system architect
 % In this section, describe the overall system hardware and organization.  Include a list of hardware components (with a brief description of each item) and diagrams showing the connectivity between the components.  If appropriate, use subsections to address each subsystem.
 The BatSignal distributed sensor network consists of two types of hardware nodes, consisting primarily of a Raspberry Pi model 2 board. These boards are inexpensive and small computers which will enable the BatSignal network to perform processing and decision making tasks based on input to the system via connected sensors. 
 
-\subsubsection{Controller Node}
-The BatSignal controller node consists of the Raspberry Pi model 2 board outfitted with a Wi-Pi WLAN module which enables wireless networking capabilities. These nodes also utilize the on board Ethernet adapter to enable a wired network connection to the Internet.
+\subsubsection{Control Node}
+The BatSignal control node consists of the Raspberry Pi model 2 board outfitted with a Wi-Pi WLAN module which enables wireless networking capabilities. These nodes also utilize the on board Ethernet adapter to enable a wired network connection to the Internet.
 
 \subsubsection{Sensor Node}
-The BatSignal sensor node consists of the Raspberry Pi model 2 board outfitted with a Wi-Pi WLAN module which enables wireless networking capabilities. The sensor nodes are also outfitted with a USB microphone which enables the audio pickup used to monitor the environment.
+The BatSignal sensor node consists of the Raspberry Pi model 2 board outfitted with a Wi-Pi WLAN module which enables wireless networking capabilities. The sensor nodes are also outfitted with a USB microphone which enables the passive audio recording used to monitor the environment.
 
 \subsection{System Software Architecture}
 % In this section, describe the overall system software and organization.  Include a list of software modules (this could include functions, subroutines, or classes), computer languages, and programming computer-aided software engineering tools (with a brief description of the function of each item).  Use structured organization diagrams/object-oriented diagrams that show the various segmentation levels down to the lowest level.  All features on the diagrams should have reference numbers and names.  Include a narrative that expands on and enhances the understanding of the functional breakdown.  If appropriate, use subsections to address each module.
 % Note: The diagrams should map to the FRD data flow diagrams, providing the physical process and data flow related to the FRD logical process and data flow.
-The system has two types of nodes in the mesh network.  The first type of node is a sensor, and the second is the control node.  There is only one control node per complete network.  The sensor nodes and controller node run different python modules which dictate their behavior. \\
-Sensor nodes passively wait for input from the attached microphone.  Using python's speech recognition library the audio input is converted into text.  It is then sent across the mesh network to the control node. \\
-The control node passively waits for input from the sensor nodes. Upon receiving a message it searches the text for help phrases that are defined in a configuration file and read upon startup. When a help phrase is identified, an email is composed with the full text of the message and sent to the administrators.  The administrators are defined in a configuration file and read upon startup.  The control node is the only node connected directly to the Internet.
+The system has two types of nodes in the mesh network.  The first type of node is a sensor, and the second is the control node.  There is only one control node per complete network.  The sensor nodes and controller node run different python modules which dictate their behavior. \\\\
+Sensor nodes passively wait for input from the attached microphone.  Using python's speech recognition library the audio input is converted into text.  It is then sent across the mesh network to the control node. \\\\
+The control node passively waits for input from the sensor nodes. Upon receiving a message it searches the text for control phrases that are defined in a configuration file and read upon startup. When a control phrase is identified, an email is composed with the full text of the message and sent to the administrators.  The administrators are defined in a configuration file and read upon startup.  The control node is the only node connected directly to the Internet.
 % We need to put a specification for the administration console here.
 
 
@@ -165,7 +169,7 @@ A mesh network is a topology in which each node connected to the network acts as
 
 \section{Human-Machine Interface}
 % This section provides the detailed design of the system and subsystem inputs and outputs relative to the user/operator.  Any additional information may be added to this section and may be organized according to whatever structure best presents the operator input and output designs.  Depending on the particular nature of the project, it may be appropriate to repeat these sections at both the subsystem and design module levels.  Additional information may be added to the subsections if the suggested lists are inadequate to describe the project inputs and outputs.
-The BatSignal distributed sensor network is designed to work transparently to the user. A regular user will provide input to the system by speaking within the environment where a sensor node has been installed. An administrative user will receive output from the system via email messages. 
+The BatSignal distributed sensor network is designed to work transparently to the user. The system is designed to passively record audio from the surrounding environment.  It does not require any interaction from the user to activate and any and all maintenance can usually be performed remotely.  Input from administrators to maintain the system is performed through remote access to the control nodes through ssh and through the administration console.  The system output email messages upon detecting a control phrase.  Email messages are sent to the list of administrators containing the full text of the triggering input and the location of the node that originally detected the control phrase.
 
 \subsection{Inputs}
 %This section is a description of the input media used by the operator for providing information to the system; show a mapping to the high-level data flows described in Section 1 .2.1, System Overview.  For example, data entry screens, optical character readers, bar scanners, etc.  If appropriate, the input record types, file structures, and database structures provided in Section 3, File and Database Design, may be referenced.  Include data element definitions, or refer to the data dictionary.
@@ -175,12 +179,11 @@ The BatSignal distributed sensor network is designed to work transparently to th
 % •	Copies of form(s) if the input data are keyed or scanned for data entry from printed forms
 % •	Description of any access restrictions or security considerations
 % •	Each transaction name, code, and definition, if the system is a transaction-based processing system
-Input to the system comes in three forms; configuration files, the administrative console, and ambient verbal audio. \\
-Configuration files are read by each node on startup. These files are stored on the controller node in a subdirectory of the installation folder named "config".  The files are stored as "phrases.json" and "admins.json". They each contain a single json object with a list of strings. The list of string for "phrases.json" are the help phrases for the system, each of which is a single English word. The list of strings for "admins.json" are email addresses for the administrators.
-The administrative console may be used to modify system configuration. 
-\\
+Input to the system comes in three forms; configuration files, the administrative console, and ambient verbal audio. \\\\
+Configuration files are read by each node on startup. These files are stored on the controller node in a subdirectory of the installation folder named "config".  The files are stored as "phrases.json" and "admins.json". They each contain a single json object with a list of strings. The list of string for "phrases.json" are the help phrases for the system, each of which is a single English word. The list of strings for "admins.json" are email addresses for the administrators. \\\\
+% This section requires elaboration on the administration console and its capabilities for interacting with the system.
+The administrative console may be used to modify system configuration. \\\\
 The input to the sensor nodes is through verbal audio signals recorded using the attached microphone.  The controller node receives input in the form of text messages relayed across the mesh network from the sensor nodes.
-% Need an elaboration here concerning the administration console.
 
 \subsection{Outputs}
 % This section describes of the system output design relative to the user/operator; show a mapping to the high-level data flows described in Section 1.2.1.  System outputs include reports, data display screens and GUIs, query results, etc.  The output files are described in Section 3 and may be referenced in this section.  The following should be provided, if appropriate:
@@ -189,7 +192,10 @@ The input to the sensor nodes is through verbal audio signals recorded using the
 % •	Description of the purpose of the output, including identification of the primary users
 % •	Report distribution requirements, if any (include frequency for periodic reports)
 % •	Description of any access restrictions or security considerations
-Sensor nodes produce messages to the controller node as output. These messages contain the verbal audio converted into English plain-text. The controller node produces the system output in the form of email messages addressed to the administrators. These messages are sent only when a help phrase has been detected.
+There are three forms of output in the system: internal output from the sensor nodes, email messages to the administrators, and status information available through the administration console. \\\\
+The sensor nodes produce text messages containing the converted audio input recorded.  These messages are relayed over the wireless mesh network to the control node for processing.  The control node upon detecting a control phrase composes an email that is sent to the list of administrators containing the full text input that triggered the response and the location of the originating node. \\\\
+% This section requires an elaboration on the administration console and its capabilities for displaying the status of the system.
+The administration console displays information concerning the current state of the system.
 
 \section{Detailed Design}
 % This section provides the information needed for a system development team to actually build and integrate the hardware components, code and integrate the software modules, and interconnect the hardware and software segments into a functional product. Additionally, this section addresses the detailed procedures for combining separate COTS packages into a single system. Every detailed requirement should map back to the FRD, and the mapping should be presented in an update to the RTM and include the RTM as an appendix to this design document.
