@@ -63,7 +63,58 @@ BatSignal also relies heavily on the ability to convert audio captures to a text
 
 \subsection{Points of Contact}
 % This section provides the organization code and title of the key points of contact (and alternates if appropriate) for the information system development effort.  These points of contact should include the Project Manager, System Proponent, User Organization, Quality Assurance (QA) Manager, Security Manager, and Configuration Manager, as appropriate.
-
+\begin{itemize}
+    \item{Physical Layout} \\
+    This role involves determining the optimal distance between nodes in the network and their placement within the environment.  It is closely connected to the role for Installation but also requires benchmarking to find the limits and recommended distances for use in the documentation of the system.
+    \begin{itemize}
+        \item{primary: Zach Thornton}
+    \end{itemize}
+    \item{BatSignal Sensor Module} \\
+    This role involves designing and implementing the python module for the sensor nodes.  This module will have the design detailed in section 4.2.
+    \begin{itemize}
+        \item{primary: Joseph Moraal}
+        \item{secondary: Bryan Young}
+    \end{itemize}
+    \item{BatSignal Control Module} \\
+    This role involves designing and implementing the python module for the control node.  This module will have the design detailed in section 4.2.
+    \begin{itemize}
+        \item{primary: Joseph Moraal}
+        \item{secondary: Bryan Young}
+    \end{itemize}
+    \item{Administration Console} \\
+    This role involves designing and implementing the administration console detailed in section 4.2.
+    \begin{itemize}
+        \item{primary: Zach Thornton}
+    \end{itemize}
+    \item{Documentation} \\
+    This role involves writing, proof reading, and compiling the documentation for the system.  This documentation involves all documents asked for including this document as well as installation guides, performance analytics, etc.
+    \begin{itemize}
+        \item{primary: Bryan Young}
+        \item{secondaries: Joseph Moraal, Zach Thornton}
+    \end{itemize}
+    \item{Network Setup}
+    \begin{itemize}
+        \item{primary: Bryan Young}
+        \item{secondary: Zach Thornton}
+    \end{itemize}
+    \item{Performance Analysis} \\
+    This role involves benchmarking the limits of the system and recording them.  These benchmarks include latency, and throughput. 
+    \begin{itemize}
+        \item{primary: Joseph Moraal}
+    \end{itemize}
+    \item{Installation} \\
+    This role involves the installation of the system within the test environments and the documenting of the steps involved from physical hardware setup to software setup and initial configuration.
+    \begin{itemize}
+        \item{primary: Zach Thornton}
+        \item{secondary: Bryan Young}
+    \end{itemize}
+    \item{Maintenance} \\
+    This role involves determining the steps required to perform normal maintenance of the system and documenting them.  Examples of this are: documenting the administration console, and the control node configuration.  Documentation for the administration console includes: how to connect to the console and navigate to different portions within the console.  Documentation on the control node configuration includes how to ssh into the control node, where to find the configuration files used by the system, and how to restart the system.
+    \begin{itemize}
+        \item{primary: Joseph Moraal}
+        \item{secondary: Zach Thornton}
+    \end{itemize}
+\end{itemize}
 
 \subsection{Project References}
 % This section provides a bibliography of key project references and deliverables that have been produced before this point.  
