@@ -231,8 +231,38 @@ The glossary provides expansions for acronyms and abbreviations which appear wit
 	\hline
 	\multicolumn{2}{ | c | }{\textbf{Industry Definitions}} \\
 	\hline
+	ARM				& A family of instruction set architectures	\\
+	&\\
 	B.A.T.M.A.N		& Better Approach to Mobile Ad-hoc Networking \\
-	Wi-Pi 			&  \\
+	&\\
+	Flask			& A Python library used for backend Web Development	\\
+	&\\
+	Google			& A company specializing in Internet Technologies	\\
+	&\\
+	IEEE			& Institute of Electrical and Electronics Engineers	\\
+	&\\
+	JSON			& JavaScript Object Notation, a human readable format used to transmit data objects. \\
+	&\\
+	Project Meshnet & 	An alternative ad-hoc network protocol	\\
+	&\\
+	PyAudio			& A Python library used for cross platform audio I/O	\\
+	&\\
+	Python			& High level programming language \\
+	&\\
+	Raspberry Pi    & A budget single board computer \\
+	&\\
+	SpeechRecognition & A Python library used for accessing the Google Speech Recognition API \\
+	&\\
+	WEP				& Wired Equivalent Privacy, a network security protocol \\
+	&\\
+	Wi-Pi 			& A wireless adapter for the Raspberry Pi  \\
+	&\\
+	WPA 			& Wi-Fi Protected Access, a network security protocol \\
+	&\\
+	WPA-PSK			& Wi-Fi Protected Access Pre-Shared Key, a network security protocol \\
+	&\\
+
+
 	\hline
 \end{tabularx}
 \end{center}
@@ -309,7 +339,7 @@ The administration console may be used to modify system configuration.
 There are three forms of output in the system: internal output from the sensor nodes, email messages to the administrators, and status information available through the administration console. \\\\
 The sensor nodes produce text messages containing the converted audio input recorded.  These messages are relayed over the wireless mesh network to the controller node for processing.  The controller node dispatches an email to the administrators containing the plain-text captured input and the node identifier of the sensor which captured the alert. \\\\
 % This section requires an elaboration on the administration console and its capabilities for displaying the status of the system.
-The administration console displays information concerning the current state of the system.
+The administration console displays information concerning the current state of the system.  The state includes sensor node information such as node uptime, node status, and hostnames.  The console will also display any alerts that were emailed.   \\\\
 
 \section{Detailed Design}
 % This section provides the information needed for a system development team to actually build and integrate the hardware components, code and integrate the software modules, and interconnect the hardware and software segments into a functional product. Additionally, this section addresses the detailed procedures for combining separate COTS packages into a single system. Every detailed requirement should map back to the FRD, and the mapping should be presented in an update to the RTM and include the RTM as an appendix to this design document.
