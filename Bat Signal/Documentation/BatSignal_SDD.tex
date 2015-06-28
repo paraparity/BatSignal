@@ -116,7 +116,8 @@ Python modules installed on the control node passively receives the sensor's dat
 % Note: The diagrams should map to the FRD data flow diagrams, providing the physical process and data flow related to the FRD logical process and data flow.
 \textnormal{The system has two types of nodes in the mesh network.  The first type of node is a sensor, and the second is the control node.  There is only one control node per complete network.  The sensor nodes and control node run different python modules which dictate their behavior. \\
 Sensor nodes passively wait for input from the attached microphone.  Using python's speech recognition library the audio input is converted into text.  It is then sent across the mesh network to the control node. \\
-The control node passively waits for input from the sensor nodes.  Upon receiving a message it searches the text for help phrases that are defined in a configuration file and read upon startup.  Upon finding a help phrase an email is composed with the full text of the message and sent to the administrators.  The administrators are defined in a configuration file and read upon startup.  The control node is the only node connected to the internet.}
+The control node passively waits for input from the sensor nodes.  Upon receiving a message it searches the text for help phrases that are defined in a configuration file and read upon startup.  Upon finding a help phrase an email is composed with the full text of the message and sent to the administrators.  The administrators are defined in a configuration file and read upon startup.  The control node is the only node connected to the Internet.}
+% We need to put a specification for the administration console here.
 
 
 \subsection{Internal Communications Architecture}
@@ -135,6 +136,9 @@ The control node passively waits for input from the sensor nodes.  Upon receivin
 % •	Copies of form(s) if the input data are keyed or scanned for data entry from printed forms
 % •	Description of any access restrictions or security considerations
 % •	Each transaction name, code, and definition, if the system is a transaction-based processing system
+\textnormal{Input to the system is through configuration files, the administration console, and audio.  Configuration files are read by each node on startup.  The administration console can be used at anytime to configure the system.  There are two files that are used for configuration: the help phrase file, and the administrators file.  These files are stored on the control node in a subdirectory of the installation folder.  The installation folder is the location where the python modules for the system have been installed.  The files are stored in the subdirectory named "config". The files are stored as "phrases.json" and "admins.json".  They contain a single json object containing a list of strings.  The list of string for "phrases.json" is the help phrases for the system.  The phrases can be any single english word. The list of strings for "admins.json" are email addresses for the administrators.  All administrators listed in the configuration file recieve an email when the system detects a help phrase. \\
+The input to the sensor nodes is audio signals recorded using the attached microphone.  The control node receives input in the form of text messages relayed across the mesh network from the sensor nodes.}
+% Need an elaboration here concerning the administration console.
 
 \subsection{Outputs}
 % This section describes of the system output design relative to the user/operator; show a mapping to the high-level data flows described in Section 1.2.1.  System outputs include reports, data display screens and GUIs, query results, etc.  The output files are described in Section 3 and may be referenced in this section.  The following should be provided, if appropriate:
@@ -143,6 +147,7 @@ The control node passively waits for input from the sensor nodes.  Upon receivin
 % •	Description of the purpose of the output, including identification of the primary users
 % •	Report distribution requirements, if any (include frequency for periodic reports)
 % •	Description of any access restrictions or security considerations
+\textnormal{Sensor nodes produce text messages as output.  The text messages contain the converted audio into english text.  The control node produces the final output in the form of email messages to the administrators when a help phrase is detected.}
 
 \section{Detailed Design}
 % This section provides the information needed for a system development team to actually build and integrate the hardware components, code and integrate the software modules, and interconnect the hardware and software segments into a functional product.  Additionally, this section addresses the detailed procedures for combining separate COTS packages into a single system.  Every detailed requirement should map back to the FRD, and the mapping should be presented in an update to the RTM and include the RTM as an appendix to this design document.
