@@ -38,9 +38,9 @@ The system is designed to be scalable according to the needs of the location of 
 
 \subsubsection{System Overview}
 % This section describes the system in narrative form using non-technical terms.  It should provide a high-level system architecture diagram showing a subsystem breakout of the system, if applicable.  The high-level system architecture or subsystem diagrams should, if applicable, show interfaces to external systems.  Supply a high-level context diagram for the system and subsystems, if applicable.  Refer to the requirements trace ability matrix (RTM) in the Functional Requirements Document (FRD), to identify the allocation of the functional requirements into this design document.
-The system is divided into two types of nodes.  The nodes form a mesh network that relays data from the first type of nodes called sensors to the second type of node called the controller node. \\\\
-Python modules installed on the sensor nodes passively read input from a microphone. The input from the microphone is fed into python's speech recognition module. The audio input is then sent to the controller node over the mesh network either as JSON. \\\\
-Python modules installed on the controller node passively receive the sensor's data.  It then parses through the text looking for alert phrases.  Upon recognizing a alert phrase an email is sent to a list of administrators containing the full triggering text input.
+The system is divided into two types of nodes.  These nodes form a mesh network that relays data from the first type of node, called sensor nodes, to the second type of node, called the controller node. \\\\
+Python modules installed on the sensor nodes passively read input from a microphone. The input from the microphone is fed into Python's speech recognition module. The audio input is then sent to the controller node over the mesh network as JSON. \\\\
+Python modules installed on the controller node passively receive the sensor's data.  It then parses through the text looking for alert phrases.  Upon recognizing an alert phrase an email is sent to a list of administrators containing the plain-text of the audio capture and the identifier for the sensor node that captured it.
 \begin{figure}[H]
 	\centering
 		\includegraphics[scale=0.75, keepaspectratio=true]{Graphics/SimpleOverview.png}
@@ -52,7 +52,8 @@ Python modules installed on the controller node passively receive the sensor's d
 The BatSignal distributed sensor network will consist of numerous Raspberry Pi boards distributed across a physical area. This network has many constraints that must be considered. These constraints are as follows:
 \begin{itemize}
 	\item{\textbf{Maximum Node Separation Distance -}}
-		The nodes must be close enough to communicate effectively with one another in order to form a reliable mesh network. This maximum effective communication distance relies on the capabilities of the Wi-Pi WLAN module and the B.A.T.M.A.N. routing protocol. This distance has not been determined yet.	The communication range is also affected by physical objects in the installation environment, which may reduce the base measurement during implementation.
+		The nodes must be close enough to communicate effectively with one another in order to form a reliable mesh network. This maximum effective communication distance relies on the capabilities of the Wi-Pi WLAN module and the B.A.T.M.A.N. routing protocol. This distance has not been determined yet. \\\\
+		The communication range is also affected by physical objects in the installation environment, which may reduce the base measurement during implementation.
 	\item{\textbf{Sensor per Controller Ratio -}}
 		Due to the physical limitations of the controller node's processing power and each Wi-Pi WLAN module's transmission rate, coupled with the mesh network's maximal flow limits, there is a finite number of sensors that should be paired with any single controller node. This ratio has not been determined yet.
 \end{itemize}
@@ -100,7 +101,7 @@ BatSignal also relies heavily on the ability to convert audio captures to a text
         \item{secondary: Zach Thornton}
     \end{itemize}
     \item{Performance Analysis} \\
-    This role involves benchmarking the limits of the system and recording them.  These benchmarks include latency, and throughput. 
+    This role involves benchmarking the limits of the system and recording them.  These benchmarks include latency, throughput, and accuracy. 
     \begin{itemize}
         \item{primary: Joseph Moraal}
     \end{itemize}
@@ -202,9 +203,9 @@ The BatSignal sensor node consists of the Raspberry Pi model 2 board outfitted w
 \subsection{System Software Architecture}
 % In this section, describe the overall system software and organization.  Include a list of software modules (this could include functions, subroutines, or classes), computer languages, and programming computer-aided software engineering tools (with a brief description of the function of each item).  Use structured organization diagrams/object-oriented diagrams that show the various segmentation levels down to the lowest level.  All features on the diagrams should have reference numbers and names.  Include a narrative that expands on and enhances the understanding of the functional breakdown.  If appropriate, use subsections to address each module.
 % Note: The diagrams should map to the FRD data flow diagrams, providing the physical process and data flow related to the FRD logical process and data flow.
-The system has two types of nodes in the mesh network.  The first type of node is a sensor, and the second is the controller node.  There is only one controller node per complete network.  The sensor nodes and controller node run different python modules which dictate their behavior. \\\\
-Sensor nodes passively wait for input from the attached microphone.  Using python's speech recognition library the audio input is converted into text.  It is then sent across the mesh network to the controller node. \\\\
-The controller node passively waits for input from the sensor nodes. Upon receiving a message it searches the text for alert phrases that are defined in a configuration file and read upon startup. When an alert phrase is identified, an email is composed with the full text of the message and sent to the administrators.  The administrators are defined in a configuration file and read upon startup.  The controller node is the only node connected directly to the Internet.
+The system has two types of nodes in the mesh network. The first type of node is a sensor, and the second is the controller node.  There is only one controller node per complete network. The sensor nodes and controller node run different python modules which dictate their behavior. \\\\
+Sensor nodes passively wait for input from the attached microphone.  Using Python's speech recognition library the audio input is converted into text.  It is then sent across the mesh network to the controller node. \\\\
+The controller node passively waits for input from the sensor nodes. Upon receiving a message it searches the text for alert phrases that are defined in a configuration file and read upon startup. When an alert phrase is identified, an email is composed with the full text of the message and sent to the administrators. The administrators are defined by email address in a configuration file and read upon startup. The controller node is the only node connected directly to the Internet.
 % We need to put a specification for the administration console here.
 
 
@@ -236,9 +237,8 @@ The BatSignal distributed sensor network is designed to work transparently to th
 % •	Each transaction name, code, and definition, if the system is a transaction-based processing system
 Input to the system comes in three forms; configuration files, the administration console, and ambient verbal audio. \\\\
 Configuration files are read by each node on startup. These files are stored on the controller node in a subdirectory of the installation folder named "config".  The files are stored as "phrases.json" and "admins.json". They each contain a single json object with a list of strings. The list of string for "phrases.json" are the help phrases for the system, each of which is a single English word. The list of strings for "admins.json" are email addresses for the administrators. \\\\
-% This section requires elaboration on the administration console and its capabilities for interacting with the system.
-The administration console may be used to modify system configuration. \\\\
-The input to the sensor nodes is through verbal audio signals recorded using the attached microphone.  The controller node receives input in the form of text messages relayed across the mesh network from the sensor nodes.
+The input to the sensor nodes is through verbal audio signals recorded using the attached microphone.  The controller node receives input in the form of text messages relayed across the mesh network from the sensor nodes. \\\\
+The administration console may be used to modify system configuration.
 
 \subsection{Outputs}
 % This section describes of the system output design relative to the user/operator; show a mapping to the high-level data flows described in Section 1.2.1.  System outputs include reports, data display screens and GUIs, query results, etc.  The output files are described in Section 3 and may be referenced in this section.  The following should be provided, if appropriate:
@@ -349,7 +349,7 @@ Both versions of BatSignal nodes target the Raspberry Pi model 2 board. These sy
 	\hline
 	Sensitivity:	& 56dB @ 1kHz \\
 	\hline
-	Output Voltage:	&	1.20Vms \\
+	Output Voltage:	&	1.20V \\
 	\hline
 	Input:	&	USB  \\
 	\hline
