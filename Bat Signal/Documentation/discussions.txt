@@ -6,3 +6,5 @@ BatSignal Discussion topics (Finalizing the SDD):
 	Project References:
 		- Does the speech-to-text library have a reference web page we can link?
 		- Who makes the microphone, and do  they have a web page we can link?
+		
+	
