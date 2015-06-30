@@ -1,0 +1,5 @@
+#ignore TeXStudio auto generated files
+*.log
+*.toc
+*.aux
+*.synctex.gz
