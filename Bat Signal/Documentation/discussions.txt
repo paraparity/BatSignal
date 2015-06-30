@@ -1,0 +1,10 @@
+BatSignal Discussion topics (Finalizing the SDD):
+	Design Constraints:
+		- What assumptions do we make?
+		- What other constraints might we face? (Processing, memory, communication, etc.)
+	
+	Project References:
+		- Does the speech-to-text library have a reference web page we can link?
+		- Who makes the microphone, and do  they have a web page we can link?
+		
+	
