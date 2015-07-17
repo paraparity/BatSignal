@@ -1,0 +1,49 @@
+#!/bin/bash
+# /etc/init.d/bat-signal-bridge
+
+
+### BEGIN INIT INFO
+# Provides: 		bat-signal-bridge
+# Required-Start:	$all
+# Required-Stop:	
+# Default-Start:	2 3 4 5
+# Default-Stop:		0 1 6
+# Short-Description:	Configure bat-signal-network mesh network bridge node
+### END INIT INFO
+
+case "$1" in
+	start)
+		echo "Configuring bat-signal bridge node" 
+		
+		sudo depmod -a
+		sudo modprobe batman-adv
+
+		sudo ifconfig wlan0 mtu 1532
+		sudo ifconfig wlan0 down
+		sudo iwconfig wlan0 mode ad-hoc essid bat-signal-network ap 00:00:de:ad:be:ef channel 1
+
+		sudo batctl if add wlan0
+		sudo ifconfig wlan0 up
+		sudo ifconfig bat0 up
+
+		sudo brctl addbr piome-bridge
+		sudo brctl addif piome-bridge bat0
+		sudo brctl addif piome-bridge eth0
+
+		sudo ifconfig eth0 0.0.0.0
+		sudo ifconfig bat0 0.0.0.0
+
+		sudo ifconfig bat-signal-bridge 10.0.0.254 netmask 255.0.0.0 up
+		;;
+	stop)
+		echo "Stopping bat-signal-network bridge node"
+		sudo ifconfig bat0 down
+		;;
+	*)
+		echo "Usage: /etc/init.d/bat-signal-bridge start|stop"
+		exit 1
+		;;
+
+esac
+
+exit 0

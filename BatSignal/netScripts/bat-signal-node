@@ -1,0 +1,41 @@
+#!/bin/bash
+# /etc/init.d/bat-signal-network
+
+### BEGIN INIT INFO
+# Provides:		bat-signal-network
+# Required-Start:	$all
+# Required-Stop:
+# Default-Start:	2 3 4 5
+# Default-Stop:		0 1 6
+# Short-Description:	Configure bat-signal-network mesh network bat-signal-node
+### END INIT INFO
+
+case "$1" in
+	start)
+		echo "Starting bat-signal-network"
+		echo "Configuring bat-signal-node" 
+
+		sudo depmod -a
+		sudo modprobe batman-adv
+
+		sudo ifconfig wlan0 mtu 1528
+		sudo ifconfig wlan0 down; sudo iwconfig wlan0 mode ad-hoc essid bat-signal-network ap 00:00:de:ad:be:ef channel 1
+		
+		sudo batctl if add wlan0
+		sudo ifconfig wlan0 up
+		sudo ifconfig bat0 up
+		sudo ifconfig bat0 10.0.0.4
+		;;
+
+	stop)
+		echo "Stopping bat-signal-network" 
+		sudo ifconfig bat0 down
+		;;
+
+	*)
+		echo "Usage: /etc/init.d/bat-signal-network start|stop"
+		exit 1
+		;;
+esac
+
+exit 0
