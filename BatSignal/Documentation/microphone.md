@@ -1,5 +1,7 @@
 # Setting up the Microphone
 
+## Configuration Files
+
 There are two files that need to be modified.
 
 /etc/modprobe.d/alsa-base.conf (unmodified)
@@ -44,3 +46,8 @@ snd-bcm2835
 ```
 
 Add the line `snd-usb-audio`.
+
+## Packages
+
+Run the following command to install necessary packages `sudo aptitude install pulseaudio flac`.
+
