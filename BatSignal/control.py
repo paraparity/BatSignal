@@ -82,7 +82,17 @@ def threaded_listen():
 		print("exception in \"threaded_listen\": {0}!".format(str(e)))
 
 def configure():
-	pass
+	try:
+		global admins
+		global control_phrases
+
+		config_file = open("config.json", "rb")
+		file_contents = json.loads(config_file.read().decode("utf-8"))
+		admins = file_contents["admins"]
+		control_phrases = file_contents["phrases"]
+
+	except Exception as e:
+		print("failed to read configuration file: {0}".format(str(e)))
 
 def terminal():
 	while True:
@@ -98,7 +108,6 @@ if __name__ == "__main__":
 	# perform initial configuration
 	configure()
 
-	global email_server
 	email_server = smtplib.SMTP('localhost')
 
 	# spin up listener and work threads
