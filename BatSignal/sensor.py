@@ -41,16 +41,11 @@ class PyAudioSource(speech_recognition.AudioSource):
 		self.stream = None
 		self.audio.terminate()
 
-def configure():
-	pass
-
 def terminal():
 	while True:
 		command = input("> ")
 		if command == "exit":
 			break
-		elif command == "reconfigure":
-			configure()
 		else:
 			print("unrecognized command \"{0}\".".format(command))
 
@@ -143,8 +138,6 @@ def threaded_listen(source, recognizer):
 		thread.join()
 
 if __name__ == "__main__":
-	configure()
-
 	with PyAudioSource() as source:
 		recognizer = speech_recognition.Recognizer()
 
