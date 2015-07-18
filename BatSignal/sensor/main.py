@@ -3,6 +3,8 @@ import speech_recognition
 import threading
 import time
 import sys
+import json
+#import socket
 
 class PyAudioSource(speech_recognition.AudioSource):
 	def __init__(self, device_index = None):
@@ -17,12 +19,15 @@ class PyAudioSource(speech_recognition.AudioSource):
 		self.audio = pyaudio.PyAudio()
 
 		deviceInfo = self.audio.get_default_input_device_info()
-		self.RATE = 44100
+		self.RATE = int(deviceInfo['defaultSampleRate'])
 		self.CHANNELS = 1
+
+		apiInfo = self.audio.get_host_api_info_by_index(deviceInfo['hostApi'])
+		self.device_index = apiInfo['defaultInputDevice']
 
 		self.stream = self.audio.open(
 			input = True,
-			input_device_index = None,
+			input_device_index = self.device_index,
 			format = self.format,
 			rate = self.RATE,
 			channels = self.CHANNELS,
@@ -30,14 +35,10 @@ class PyAudioSource(speech_recognition.AudioSource):
 		return self
 
 	def __exit__(self, exc_type, exc_value, traceback):
-		print("Exiting...")
-
 		self.stream.stop_stream()
 		self.stream.close()
 		self.stream = None
 		self.audio.terminate()
-
-		print("Done.")
 
 def configure():
 	pass
@@ -53,15 +54,13 @@ def terminal():
 			print("Error: unrecognized command \"{0}\".".format(command))
 
 def audioCallback(recognizer, audio):
-	print("audio callback started...")
-
 	try:
 		audioString = recognizer.recognize(audio)
 
 		# open a socket connection to the control node
-		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		#s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		# address of control node is a predefined static ip
-		s.connect(("192.168.1.12", 50000))
+		#s.connect(("192.168.1.12", 50000))
 
 		# construct message
 		timeString = time.gmtime(time.time())
@@ -71,14 +70,12 @@ def audioCallback(recognizer, audio):
 		print(jsonString)
 
 		# send the message
-		s.sendall(jsonString)
+		#s.sendall(jsonString)
 		# close the connection
-		s.close()
+		#s.close()
  
 	except LookupError:
-		print("Error: audio not recognized!")
-
-	print("audo callback finished.")
+		pass
 
 def adjust_for_noise(recognizer, source):
 	recognizer.adjust_for_ambient_noise(source)
