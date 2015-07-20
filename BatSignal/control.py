@@ -22,7 +22,7 @@ def send_email(json_message):
 	message_to = ", ".join(admins)
 	message_from = "batsignal.noreply@gmail.com"
 
-    message = MIMEText(json_message.dumps())
+	message = MIMEText(json_message.dumps())
 	message["Subject"] = "Attention required at node {0}".format(json_message["sensor"])
 	message["From"] = message_from
 	message["To"] = message_to
@@ -115,7 +115,7 @@ if __name__ == "__main__":
 
 	username = "batsignal.noreply@gmail.com"
 	passwd = "batmailaccount"
-    email_server.login(username, passwd)
+	email_server.login(username, passwd)
     
 	# spin up listener and work threads
 	worker_threads.append(threading.Thread(target=threaded_listen))
