@@ -88,11 +88,11 @@ def audio_callback(recognizer, audio):
 		audioString = recognizer.recognize(audio)
 
 		# construct message
-		timeString = str(time.gmtime(time.time()))
+		timeString = time.strftime("%A, %B %d, %Y %X %p", time.gmtime())
 		jsonObject = {"name":socket.gethostname(), "audio":audioString, "time":timeString}
 		jsonString = json.dumps(jsonObject, sort_keys=True)
 
-		print("detected \"{0}\" at time \"{1}\"!".format(audioString, timeString))
+		print("\"{1}\" -> \"{0}\"".format(audioString, timeString))
 		# push the message onto the queue
 		message_queue.put(jsonString)
 
@@ -104,11 +104,11 @@ def audio_callback(recognizer, audio):
 
 def threaded_listen(source, recognizer):
 	while not join_threads_flag:
-		sys.stdout.write("listening... ")
-		sys.stdout.flush()
+		#sys.stdout.write("listening... ")
+		#sys.stdout.flush()
 		# listening for input on microphone
 		audio = recognizer.listen(source)
-		print("done.")
+		#print("done.")
 
 		global callback_threads
 		# join dead threads
