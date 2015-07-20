@@ -103,44 +103,12 @@ def audio_callback(recognizer, audio):
 	except Exception as e:
 		print("exception in \"audio_callback\": {0}".format(str(e)))
 
-def adjust_for_noise(recognizer, source):
-	listening_lock.acquire()
-	try:
-		print('adjusting for ambient noise')
-		recognizer.adjust_for_ambient_noise(source)
-		print('finished adjusting for ambient noise')
-	finally:
-		listening_lock.release()
-
-class RepeatingTimer(threading.Thread):
-	def __init__(self, callback, time = None, args = ()):
-		threading.Thread.__init__(self)
-
-		self.callback = callback
-		self.time = time
-		self.args = args
-
-	def run(self):
-		while not join_threads_flag:
-			self.callback(*self.args)
-			if self.time:
-				time.sleep(self.time)
-
 def threaded_listen(source, recognizer):
 	while not join_threads_flag:
-		audio = None
-
-		listening_lock.acquire()
-		try:
-			print('listening...')
-			# listening for input on microphone
-			# times out after 15 seconds of listening
-			audio = recognizer.listen(source, 15)
-		except Exception as e:
-			print("error in threaded_listen: {0}".format(str(e)))
-		finally:
-			listening_lock.release()
-			print('finished listening')
+		print("listening...", end=" ")
+		# listening for input on microphone
+		audio = recognizer.listen(source)
+		print("done.")
 
 		global callback_threads
 		# join dead threads
@@ -161,16 +129,14 @@ def threaded_listen(source, recognizer):
 if __name__ == "__main__":
 	with PyAudioSource() as source:
 		recognizer = speech_recognition.Recognizer()
-		recognizer.dynamic_energy_threshold = True
+		recognizer.dynamic_energy_threshold = False
 
-		adjust_for_noise(recognizer, source)
+		recognizer.adjust_for_ambient_noise(source)
 
-		# periodically adjust for ambient noise
-		non_daemon_threads.append(RepeatingTimer(adjust_for_noise, 15, (recognizer, source, )))
 		# listen for audio passively
 		non_daemon_threads.append(threading.Thread(target=threaded_listen, args=(source, recognizer, )))
 		# send information to control node
-		#non_daemon_threads.append(threading.Thread(target=threaded_send))
+		non_daemon_threads.append(threading.Thread(target=threaded_send))
 
 		# start worker threads
 		for thread in non_daemon_threads:
@@ -184,7 +150,7 @@ if __name__ == "__main__":
 		except KeyboardInterrupt:
 			pass
 
-		print("Shutting down.")
+		print("shutting down...", end=" ")
 
 		# join all the created threads once their work completes.
 		# this can take several seconds.
@@ -193,3 +159,4 @@ if __name__ == "__main__":
 			thread.join()
 		message_queue.join()
 
+		print("done.")
