@@ -51,7 +51,10 @@ def terminal():
 
 callback_threads = []
 non_daemon_threads = []
+
 join_threads_flag = False
+listening_lock = threading.Lock()
+
 message_queue = queue.Queue()
 
 def send_json(jsonString):
@@ -101,7 +104,13 @@ def audio_callback(recognizer, audio):
 		print("exception in \"audio_callback\": {0}".format(str(e)))
 
 def adjust_for_noise(recognizer, source):
-	recognizer.adjust_for_ambient_noise(source)
+	listening_lock.acquire()
+	try:
+		print('adjusting for ambient noise')
+		recognizer.adjust_for_ambient_noise(source)
+		print('finished adjusting for ambient noise')
+	finally:
+		listening_lock.release()
 
 class RepeatingTimer(threading.Thread):
 	def __init__(self, callback, time = None, args = ()):
@@ -119,8 +128,17 @@ class RepeatingTimer(threading.Thread):
 
 def threaded_listen(source, recognizer):
 	while not join_threads_flag:
-		# listening for input on microphone
-		audio = recognizer.listen(source)
+		audio = None
+
+		listening_lock.acquire()
+		try:
+			print('listening...')
+			# listening for input on microphone
+			# times out after 15 seconds of listening
+			audio = recognizer.listen(source, 15)
+			print('finished listening')
+		finally:
+			listening_lock.release()
 
 		global callback_threads
 		# join dead threads
@@ -130,9 +148,10 @@ def threaded_listen(source, recognizer):
 		for thread in dead_threads:
 			thread.join()
 
-		callback_thread = threading.Thread(target=audio_callback, args=(recognizer, audio, ))
-		callback_thread.start()
-		callback_threads.append(callback_thread)
+		if audio:
+			callback_thread = threading.Thread(target=audio_callback, args=(recognizer, audio, ))
+			callback_thread.start()
+			callback_threads.append(callback_thread)
 
 	for thread in callback_threads:
 		thread.join()
@@ -141,12 +160,14 @@ if __name__ == "__main__":
 	with PyAudioSource() as source:
 		recognizer = speech_recognition.Recognizer()
 
+		adjust_for_noise(recognizer, source)
+
 		# periodically adjust for ambient noise
 		non_daemon_threads.append(RepeatingTimer(adjust_for_noise, 15, (recognizer, source, )))
 		# listen for audio passively
 		non_daemon_threads.append(threading.Thread(target=threaded_listen, args=(source, recognizer, )))
 		# send information to control node
-		non_daemon_threads.append(threading.Thread(target=threaded_send))
+		#non_daemon_threads.append(threading.Thread(target=threaded_send))
 
 		# start worker threads
 		for thread in non_daemon_threads:
