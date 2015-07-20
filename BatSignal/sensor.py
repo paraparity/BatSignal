@@ -136,6 +136,8 @@ def threaded_listen(source, recognizer):
 			# listening for input on microphone
 			# times out after 15 seconds of listening
 			audio = recognizer.listen(source, 15)
+		except Exception as e:
+			print("error in threaded_listen: {0}".format(str(e)))
 		finally:
 			listening_lock.release()
 			print('finished listening')
