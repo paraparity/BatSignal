@@ -51,9 +51,7 @@ def terminal():
 
 callback_threads = []
 non_daemon_threads = []
-
 join_threads_flag = False
-listening_lock = threading.Lock()
 
 message_queue = queue.Queue()
 
@@ -129,8 +127,6 @@ def threaded_listen(source, recognizer):
 if __name__ == "__main__":
 	with PyAudioSource() as source:
 		recognizer = speech_recognition.Recognizer()
-		recognizer.dynamic_energy_threshold = False
-
 		recognizer.adjust_for_ambient_noise(source)
 
 		# listen for audio passively
