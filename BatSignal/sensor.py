@@ -60,6 +60,8 @@ def send_json(jsonString):
 	try:
 		# open a socket connection to the control node
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		# timeout set to 2 seconds
+		s.settimeout(2)
 		# address of control node is a predefined static ip currently
 		s.connect(("192.168.1.12", 50000))
 
