@@ -6,6 +6,7 @@ import sys
 import json
 import socket
 import queue
+import sys
 
 class PyAudioSource(speech_recognition.AudioSource):
 	def __init__(self, device_index = None):
@@ -87,11 +88,11 @@ def audio_callback(recognizer, audio):
 		audioString = recognizer.recognize(audio)
 
 		# construct message
-		timeString = time.gmtime(time.time())
-		jsonObject = {"name":"foo", "audio":audioString, "time":timeString}
+		timeString = str(time.gmtime(time.time()))
+		jsonObject = {"name":socket.gethostname(), "audio":audioString, "time":timeString}
 		jsonString = json.dumps(jsonObject, sort_keys=True)
 
-		print(jsonString)
+		print("detected \"{0}\" at time \"{1}\"!".format(audioString, timeString))
 		# push the message onto the queue
 		message_queue.put(jsonString)
 
@@ -103,7 +104,8 @@ def audio_callback(recognizer, audio):
 
 def threaded_listen(source, recognizer):
 	while not join_threads_flag:
-		print("listening...", end=" ")
+		sys.stdout.write("listening... ")
+		sys.stdout.flush()
 		# listening for input on microphone
 		audio = recognizer.listen(source)
 		print("done.")
@@ -146,7 +148,8 @@ if __name__ == "__main__":
 		except KeyboardInterrupt:
 			pass
 
-		print("shutting down...", end=" ")
+		sys.stdout.write("shutting down...")
+		sys.stdout.flush()
 
 		# join all the created threads once their work completes.
 		# this can take several seconds.
