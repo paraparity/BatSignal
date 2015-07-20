@@ -161,6 +161,7 @@ def threaded_listen(source, recognizer):
 if __name__ == "__main__":
 	with PyAudioSource() as source:
 		recognizer = speech_recognition.Recognizer()
+		recognizer.dynamic_energy_threshold = True
 
 		adjust_for_noise(recognizer, source)
 
