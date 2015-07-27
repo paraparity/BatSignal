@@ -19,14 +19,15 @@ worker_threads = []
 email_server = None
 
 def send_email(json_message):
-	message = MIMEText(json_message.dumps())
+	message_to = ", ".join(admins)
+	message_from = "batsignal.noreply@gmail.com"
 
-	sensor = json_message["sensor"]
-	message["Subject"] = "Attention required at node {0}".format(sensor)
-	message["To"] = ", ".join(admins)
-	message["From"] = "moraaljj@gmail.com"
+    message = MIMEText(json_message.dumps())
+	message["Subject"] = "Attention required at node {0}".format(json_message["sensor"])
+	message["From"] = message_from
+	message["To"] = message_to
 
-	email_server.send_message(message)
+	email_server.send_mail(message_from, message_to, message)
 
 def threaded_parse():
 	def parse(json_message):
@@ -108,8 +109,14 @@ if __name__ == "__main__":
 	# perform initial configuration
 	configure()
 
-	email_server = smtplib.SMTP('localhost')
+	email_server = smtplib.SMTP('smtp.gmail.com:587')
+	email_server.ehlo()
+	email_server.starttls()
 
+	username = "batsignal.noreply@gmail.com"
+	passwd = "batsignal"
+    email_server.login(username, passwd)
+    
 	# spin up listener and work threads
 	worker_threads.append(threading.Thread(target=threaded_listen))
 	worker_threads.append(threading.Thread(target=threaded_parse))
