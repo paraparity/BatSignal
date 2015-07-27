@@ -136,9 +136,9 @@ def threaded_listen(source, recognizer):
 			# listening for input on microphone
 			# times out after 15 seconds of listening
 			audio = recognizer.listen(source, 15)
-			print('finished listening')
 		finally:
 			listening_lock.release()
+			print('finished listening')
 
 		global callback_threads
 		# join dead threads
