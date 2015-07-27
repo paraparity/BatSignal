@@ -114,7 +114,7 @@ if __name__ == "__main__":
 	email_server.starttls()
 
 	username = "batsignal.noreply@gmail.com"
-	passwd = "batsignal"
+	passwd = "batmailaccount"
     email_server.login(username, passwd)
     
 	# spin up listener and work threads
