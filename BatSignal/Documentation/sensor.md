@@ -1,4 +1,35 @@
-# Setting up the Microphone
+# Setting up the Sensor node
+
+It is important to note that the following instructions assume that you have install the `git` and `wget` packages.  If you have not you can just use `sudo apt-get install` to install them.
+
+## Installing Python3
+
+The sensor modules require python3+ to run.  To install python 3 use the following command `sudo apt-get install python3 python3-dev`.  It is important to note that after installing python 3 the file /usr/bin/python will still point to /usr/bin/python2.  This means that in order to run the modules you need to run it using python3 or modify /usr/bin/python to point to /usr/bin/python3.
+
+## Installing the required python libraries
+
+### Install PortAudio v19+
+
+```
+sudo apt-get install libasound-dev
+
+wget http://www.portaudio.com/archives/pa_stable_v19_20140130.tgz
+tar -xvf pa_stable_v19_20140130.tgz
+cd pa_stable_v19_20140130
+
+./configure
+make
+sudo make install
+```
+
+### Install PyAudio
+
+```
+git clone http://people.csail.mit.edu/hubert/git/pyaudio.git
+cd pyaudio
+
+python3 setup.py install
+```
 
 ## Configuration Files
 
