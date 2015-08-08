@@ -31,7 +31,7 @@ sudo make install
 git clone http://people.csail.mit.edu/hubert/git/pyaudio.git
 cd pyaudio
 
-python3 setup.py install
+sudo python3 setup.py install
 ```
 
 #### Install pulseaudio & flac
