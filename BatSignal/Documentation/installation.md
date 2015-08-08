@@ -1,10 +1,15 @@
+# Setting up the Control node
+
+<a name=python3></a>
+#### Install Python3
+
+The sensor modules require python3+ to run.  To install python 3 use the following command `sudo apt-get install python3 python3-dev`.  It is important to note that after installing python 3 the file /usr/bin/python will still point to /usr/bin/python2.  This means that in order to run the modules you need to run it using python3 or modify /usr/bin/python to point to /usr/bin/python3.
+
 # Setting up the Sensor node
 
 It is important to note that the following instructions assume that you have install the `git` and `wget` packages.  If you have not you can just use `sudo apt-get install` to install them.
 
-#### Install Python3
-
-The sensor modules require python3+ to run.  To install python 3 use the following command `sudo apt-get install python3 python3-dev`.  It is important to note that after installing python 3 the file /usr/bin/python will still point to /usr/bin/python2.  This means that in order to run the modules you need to run it using python3 or modify /usr/bin/python to point to /usr/bin/python3.
+The sensor node also requires python3.  Use the instructions [here](#python3) to install it.
 
 #### Install PortAudio v19+
 
