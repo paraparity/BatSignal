@@ -1,10 +1,2 @@
-*.suo
-*.sdf
-*.opensdf
-*.v12.suo
-
-cmake/
-Debug/
-
 # ignore emacs generated temp files
 *~
