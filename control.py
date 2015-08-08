@@ -40,7 +40,10 @@ def threaded_parse():
 	try:
 		while not join_threads_flag:
 			while not message_queue.empty():
-				parse(message_queue.get())
+				item = message_queue.get()
+
+				print("\"{0}\" -> {1}: \"{2}\"".format(item["time"], item["name"], item["audio"]))
+				parse(item)
 				message_queue.task_done()
 
 	except Exception as e:
@@ -74,7 +77,6 @@ def threaded_listen():
 						packet = s.recv(1024)
 
 					message_queue.put(json.loads(data))
-					print(data)
 					client.close()
 					read_list.remove(s)
 
