@@ -1,2 +1,0 @@
-# EmbeddedComputing
-COMP 406
