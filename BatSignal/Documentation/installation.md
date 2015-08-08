@@ -18,7 +18,7 @@ sudo apt-get install libasound-dev
 
 wget http://www.portaudio.com/archives/pa_stable_v19_20140130.tgz
 tar -xvf pa_stable_v19_20140130.tgz
-cd pa_stable_v19_20140130
+cd portaudio
 
 ./configure
 make
@@ -31,7 +31,7 @@ sudo make install
 git clone http://people.csail.mit.edu/hubert/git/pyaudio.git
 cd pyaudio
 
-python3 setup.py install
+sudo python3 setup.py install
 ```
 
 #### Install pulseaudio & flac
