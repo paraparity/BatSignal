@@ -63,7 +63,7 @@ def send_json(jsonString):
 		# timeout set to 2 seconds
 		s.settimeout(2)
 		# address of control node is a predefined static ip currently
-		s.connect(("192.168.1.12", 50000))
+		s.connect(("10.0.0.254", 50000))
 
 		#send the message
 		s.sendall(jsonString)
