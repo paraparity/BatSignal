@@ -22,12 +22,12 @@ def send_email(json_message):
 	message_to = ", ".join(admins)
 	message_from = "batsignal.noreply@gmail.com"
 
-	message = MIMEText(json_message.dumps())
-	message["Subject"] = "Attention required at node {0}".format(json_message["sensor"])
+	message = MIMEText(json.dumps(json_message))
+	message["Subject"] = "Attention required at node {0}".format(json_message["name"])
 	message["From"] = message_from
 	message["To"] = message_to
 
-	email_server.send_mail(message_from, message_to, message)
+	email_server.sendmail(message_from, message_to, message.as_string())
 
 def threaded_parse():
 	def parse(json_message):
@@ -64,16 +64,17 @@ def threaded_listen():
 				if s is server:
 					client, address = server.accept()
 					read_list.append(client)
-					print("Connection from {0}.".format(address))
+					print("connection from {0}.".format(address))
 				else:
 					data = ''
 
 					packet = s.recv(1024)
 					while packet:
-						data += packet
+						data += packet.decode('utf-8')
 						packet = s.recv(1024)
 
 					message_queue.put(json.loads(data))
+					print(data)
 					client.close()
 					read_list.remove(s)
 
