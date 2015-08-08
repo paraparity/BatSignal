@@ -67,7 +67,7 @@ def threaded_listen():
 				if s is server:
 					client, address = server.accept()
 					read_list.append(client)
-					print("connection from {0}.".format(address))
+					#print("connection from {0}.".format(address))
 				else:
 					data = ''
 
