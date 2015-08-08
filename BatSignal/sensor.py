@@ -66,7 +66,7 @@ def send_json(jsonString):
 		s.connect(("10.0.0.254", 50000))
 
 		#send the message
-		s.sendall(jsonString)
+		s.sendall(bytes(jsonString, 'UTF-8'))
 
 		# close the connection
 		s.close()
