@@ -8,10 +8,9 @@ import re
 import os
 import time
 from forms import updateConfig
-
-#TODO
-#Remote Restart
-#Remote Hostname configuration
+#Requirements:
+#Change json config files
+#Change hostnames
 app = Flask(__name__)
 
 POOL_TIME = 5
@@ -20,8 +19,6 @@ dataLock = threading.Lock()
 threadHandler = threading.Thread()
 updatePage = True
 lastTime = time.time()
-
-
 @app.route('/')
 @app.route('/index', methods=['GET', 'POST'])
 def index():
@@ -31,8 +28,8 @@ def index():
     hs = getHostNames(ips)
     global updatePage
 
-    if updatePage == True and request.method == 'POST' and (time.time()-lastTime >5):
-        return True
+    if request.method == 'POST':
+        print("OK "+str(request.form['ip']))
 
     return render_template("index.html", iptable=zip(hs, ips, onlineList), messages=messages)
 
@@ -121,5 +118,5 @@ def getNewAlertsStart():
 if __name__ == '__main__':
     getNewAlertsStart()
     atexit.register(interrupt)
-    app.secret_key = 'DOES_NOT_MATTER'
+    app.secret_key = 'super secret key'
     app.run(debug=True, port=5050)

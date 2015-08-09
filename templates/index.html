@@ -8,6 +8,20 @@
     <link href="theme.css" rel="stylesheet">
 
     <script>
+
+        $(document).ready(function(){
+        $(".btn").click(function(){
+            var ip = $(this).closest("td").attr("id");
+            $.ajax({
+                url: "/index",
+                type: "POST",
+                data: {"ip":$(this).closest("td").attr("id")}
+            });
+
+        });
+        } );  
+
+
         function deleteRow(rowid) {   
             var row = document.getElementById(rowid);
             row.parentNode.removeChild(row);
@@ -54,14 +68,22 @@
                                 <th>Hostname</th>
                                 <th>IP Address</th>
                                 <th>Status</th>
+                                <th>Restart</th>
                             </tr>
                         </thead>   
                             {% for hs,ip,status in iptable %}
-                            <tr id="{{ip}}">
+
+                            <tr>
                                 <td>{{hs}}</td>
                                 <td>{{ip}}</td>
                                 <td>{{status}} </td>
+                                 <td id="{{ip}}">
+                                    <button type="button" class = "btn btn-default btn-large" id="{{ip}}">
+                                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                                    </button>
+                                    </td>
                             </tr>
+
                             {% endfor %}
                     </table>
                 </div>
