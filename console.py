@@ -17,8 +17,6 @@ POOL_TIME = 5
 messages = []
 dataLock = threading.Lock()
 threadHandler = threading.Thread()
-updatePage = True
-lastTime = time.time()
 
 
 @app.route('/')
@@ -28,7 +26,6 @@ def index():
     ips = getIpAddresses()
     onlineList = isServerAvailable(ips)
     hs = getHostNames(ips)
-    global updatePage
 
     if request.method == 'POST':
         ip = str(request.form['ip'])
@@ -43,16 +40,31 @@ def serveConfig():
     form = updateConfig(request.form)
     f = open("config.json", "r+")
     data = json.load(f)
+    removedAdmin = False
+    #if request.method == 'POST' and request.form['admin'] is not None:
+      #  data['admins'].remove(str(request.form['admin']))
 
-    updated = False 
-    if request.method == 'POST' and form.validate():
-        data['admins'].append(form.admins.data)
-        data['phrases'].append(form.phrases.data)
-        f.seek(0)
-        json.dump(data, f, indent=4)
-        f.close()
-        return redirect(url_for("index"))
-    return render_template('config.html', form=form, update=updated, admins=data['admins'], phrases=data['phrases'])
+    if request.method == 'POST':
+        try:
+            dataToRemove = request.form['data']
+            category = request.form['category']
+            data[category].remove(dataToRemove)
+            f.seek(0)
+            json.dump(data, f, indent=4)
+            f.truncate()
+            f.close()
+            removedAdmin = True
+            return redirect(url_for("serveConfig"))
+        except KeyError:    
+            if form.validate() and removedAdmin is False:
+                data['admins'].append(form.admins.data)
+                data['phrases'].append(form.phrases.data)
+                f.seek(0)
+                json.dump(data, f, indent=4)
+                f.close()
+                return redirect(url_for("serveConfig"))
+
+    return render_template('config.html', form=form, admins=data['admins'], phrases=data['phrases'])
 
 
 def restartNode(ipAddress):
@@ -69,9 +81,10 @@ def getHostNames(ips):
     return hostnames
 
 
-def changeHostName(hostname):
-    print("Changed!")
-    command = "ssh pi@192.168.1.XXX 'sudo sed -i 's/ubuntu/new-hostname/g' /etc/hosts'"
+def changeHostName(hostname, ipAddress):
+    #command = "ssh pi@"+ipAddress+" echo raspberry | sudo -S sed -i 's/ubuntu/new-hostname/g' /etc/hosts'"
+    command = "ssh pi@"+ipAddress+" echo raspberry | sudo -S hostname "+hostname
+    os.system(command)
 
 
 def getIpAddresses():
@@ -87,7 +100,6 @@ def isServerAvailable(ipAddresses):
     for i in ipAddresses:
         command = "ping -c 1 -t 5 "+i+" >/dev/null 2>&1"
         response = os.system(command)
-
         if response == 0:
             onlineList.append(True)
         else:
@@ -95,10 +107,10 @@ def isServerAvailable(ipAddresses):
     return onlineList
 
 
+#Background Threads to query the message file
 def interrupt():
     global threadHandler
     threadHandler.cancel()
-
 
 def getNewAlerts():
     global messages
@@ -108,7 +120,9 @@ def getNewAlerts():
     with dataLock:
         for line in tempMessage:
             messages.append(line)
+
     tempMessage.close()
+    messages.reverse()
     time.sleep(60)
     threadHandler = threading.Timer(POOL_TIME,getNewAlerts,())
     threadHandler.start()
@@ -119,6 +133,8 @@ def getNewAlertsStart():
 
     threadHandler = threading.Timer(POOL_TIME, getNewAlerts,())
     threadHandler.start()
+
+
 if __name__ == '__main__':
     getNewAlertsStart()
     atexit.register(interrupt)

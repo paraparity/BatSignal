@@ -11,6 +11,27 @@
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <link href="theme.css" rel="stylesheet">
+
+
+<script>
+
+        $(document).ready(function(){
+        $(".btn").click(function(){
+            var category = $(this).closest("tr").attr("id");
+            var data = $(this).closest("td").attr("id");
+            alert(category);
+            alert(data);
+            $.ajax({
+                url: "/config",
+                type: "POST",
+                data: {"category":category, "data": data}
+            });
+            location.reload();
+
+        });
+        } );  
+
+    </script>
 </head>
 
 <body role="document">
@@ -48,7 +69,7 @@
     {{  render_field(form.phrases) }}
    
   </dl>
-  <p><input type=submit value=Submit onsubmit="window.location.href ='index.html'; return false;">
+  <p><input type=submit value=Submit onsubmit="window.location.href ='config.html'; return true;">
   <input type=hidden value="{{ next or '' }}" name=next>
 </form>
 </div>
@@ -67,9 +88,13 @@
                             </tr>
                         </thead>   
                             {% for a in admins %}
-                            <tr>
-                                <td>{{a}}</td>
+                            <tr id="admins">
 
+                                <td >{{a}}</td>
+                                <td id="{{a}}"><button type="button" class = "btn btn-default btn-large" >
+                                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                    </button>
+                                 </td>
                             </tr>
                             {% endfor %}
                     </table>
@@ -85,8 +110,12 @@
                             </tr>
                         </thead>   
                             {% for a in phrases %}
-                            <tr>
-                                <td>{{a}}</td>
+                            <tr id="phrases">
+                                <td >{{a}}</td>
+                                <td id="{{a}}"><button type="button" class = "btn btn-default btn-large" >
+                                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                    </button>
+                                 </td>
 
                             </tr>
                             {% endfor %}
