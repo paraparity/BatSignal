@@ -19,6 +19,8 @@ dataLock = threading.Lock()
 threadHandler = threading.Thread()
 updatePage = True
 lastTime = time.time()
+
+
 @app.route('/')
 @app.route('/index', methods=['GET', 'POST'])
 def index():
@@ -29,7 +31,9 @@ def index():
     global updatePage
 
     if request.method == 'POST':
-        print("OK "+str(request.form['ip']))
+        ip = str(request.form['ip'])
+        print("Restarting "+ip)
+        restartNode(ip)
 
     return render_template("index.html", iptable=zip(hs, ips, onlineList), messages=messages)
 
@@ -40,7 +44,7 @@ def serveConfig():
     f = open("config.json", "r+")
     data = json.load(f)
 
-    updated = False
+    updated = False 
     if request.method == 'POST' and form.validate():
         data['admins'].append(form.admins.data)
         data['phrases'].append(form.phrases.data)
@@ -52,8 +56,8 @@ def serveConfig():
 
 
 def restartNode(ipAddress):
-    print("Restarted!")
-
+    command = "ssh pi@"+ipAddress+" echo raspberry | sudo -S /sbin/reboot"
+    os.system(command)
 
 def getHostNames(ips):
     hostnames = []
