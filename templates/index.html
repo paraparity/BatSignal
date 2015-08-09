@@ -1,0 +1,106 @@
+<!doctype html>
+<head>
+    <meta http-equiv="refresh" content="30" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link href="theme.css" rel="stylesheet">
+
+    <script>
+        function deleteRow(rowid) {   
+            var row = document.getElementById(rowid);
+            row.parentNode.removeChild(row);
+        }
+    </script>
+
+</head>
+
+
+
+<title>BatSignal</title>
+<body role="document">
+<!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse ">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Batsignal</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="{{url_for('serveConfig')}}">Config</a></li>
+            <li><a href="#contact">Alerts</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+ <div class="container theme-showcase" role="main">
+          <div class="page-header">
+                <h1> <b> Node Status </b></h1>
+            </div>
+            <div class = "row">
+                <div class ="col-md-6">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Hostname</th>
+                                <th>IP Address</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>   
+                            {% for hs,ip,status in iptable %}
+                            <tr id="{{ip}}">
+                                <td>{{hs}}</td>
+                                <td>{{ip}}</td>
+                                <td>{{status}} </td>
+                            </tr>
+                            {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+       <div class="container theme-showcase" role="main">
+
+
+          <div class="page-header">
+                <h1> <b> Alerts </b></h1>
+            </div>
+
+            <div class = "row">
+                <div class ="col-md-6">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Message</th>
+                            </tr>
+                        </thead>   
+                            {% for m in messages %}
+                            <tr>
+                                <td>{{m}} </td>
+                            </tr>
+                            {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    
+</body>

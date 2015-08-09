@@ -1,0 +1,97 @@
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://malsup.github.com/jquery.form.js"></script> 
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<link href="theme.css" rel="stylesheet">
+</head>
+
+<body role="document">
+<!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse ">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{{url_for('index')}}">Batsignal</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li ><a href="{{url_for('index')}}">Home</a></li>
+            <li class="active"><a href="{{url_for('serveConfig')}}">Config</a></li>
+            <li><a href="#contact">Alerts</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+ <div class="container theme-showcase" role="main">
+
+{% extends "layout.html" %}
+{% block body %}
+
+{% from "_formhelpers.html" import render_field  %}
+<form method=post action="/config" id="submission">
+  <dl>
+    {{  render_field(form.admins) }}
+    {{  render_field(form.phrases) }}
+   
+  </dl>
+  <p><input type=submit value=Submit onsubmit="window.location.href ='index.html'; return false;">
+  <input type=hidden value="{{ next or '' }}" name=next>
+</form>
+</div>
+
+<div class="page-header">
+                <h1> <b> Notifiers & Phrases</b></h1>
+            </div>
+
+            <div class = "row">
+                <div class ="col-md-6">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Admins</th>
+
+                            </tr>
+                        </thead>   
+                            {% for a in admins %}
+                            <tr>
+                                <td>{{a}}</td>
+
+                            </tr>
+                            {% endfor %}
+                    </table>
+                </div>
+            </div>
+            <div class = "row">
+                <div class ="col-md-6">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Phrases</th>
+
+                            </tr>
+                        </thead>   
+                            {% for a in phrases %}
+                            <tr>
+                                <td>{{a}}</td>
+
+                            </tr>
+                            {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+{% endblock %}
