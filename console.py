@@ -22,17 +22,25 @@ threadHandler = threading.Thread()
 @app.route('/')
 @app.route('/index', methods=['GET', 'POST'])
 def index():
+    form = updateConfig(request.form)
     onlineList = []
     ips = getIpAddresses()
     onlineList = isServerAvailable(ips)
     hs = getHostNames(ips)
 
-    if request.method == 'POST':
-        ip = str(request.form['ip'])
+    if request.method == 'POST' and request.form['category'] == "ip":
+        ip = str(request.form['data'])
         print("Restarting "+ip)
         restartNode(ip)
+        
+    elif request.method == 'POST' and request.form['category'] == "hostname":
+        hostname = str(request.form['data'])
+        ipAddress = str(request.form['ip'])
+        changeHostName(hostname,ipAddress)
+        print("Changing hostname")
 
-    return render_template("index.html", iptable=zip(hs, ips, onlineList), messages=messages)
+
+    return render_template("index.html",form = form, iptable=zip(hs, ips, onlineList), messages=messages)
 
 
 @app.route('/config', methods=['GET', 'POST'])
@@ -85,6 +93,7 @@ def changeHostName(hostname, ipAddress):
     #command = "ssh pi@"+ipAddress+" echo raspberry | sudo -S sed -i 's/ubuntu/new-hostname/g' /etc/hosts'"
     command = "ssh pi@"+ipAddress+" echo raspberry | sudo -S hostname "+hostname
     os.system(command)
+    print(command)
 
 
 def getIpAddresses():

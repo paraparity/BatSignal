@@ -7,4 +7,3 @@ from wtforms.fields.html5 import EmailField
 class  updateConfig(Form):
     admins = EmailField('admins')
     phrases = TextField('phrases')
-

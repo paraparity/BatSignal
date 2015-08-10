@@ -10,7 +10,8 @@
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<link href="theme.css" rel="stylesheet">
+<link href="{{url_for('static',filename='theme.css')}}" rel="stylesheet">
+<script src="{{url_for('static', filename='bootbox.min.js')}}"></script>
 
 
 <script>
@@ -19,8 +20,7 @@
         $(".btn").click(function(){
             var category = $(this).closest("tr").attr("id");
             var data = $(this).closest("td").attr("id");
-            alert(category);
-            alert(data);
+
             $.ajax({
                 url: "/config",
                 type: "POST",
@@ -73,7 +73,7 @@
   <input type=hidden value="{{ next or '' }}" name=next>
 </form>
 </div>
-
+<div class="container" role="main">
 <div class="page-header">
                 <h1> <b> Notifiers & Phrases</b></h1>
             </div>
@@ -84,14 +84,14 @@
                         <thead>
                             <tr>
                                 <th>Admins</th>
-
+                                <th>Delete</th>
                             </tr>
                         </thead>   
                             {% for a in admins %}
                             <tr id="admins">
 
                                 <td >{{a}}</td>
-                                <td id="{{a}}"><button type="button" class = "btn btn-default btn-large" >
+                                <td id="{{a}}"><button type="button" class = "btn btn-default btn-large AdminButton" >
                                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                                     </button>
                                  </td>
@@ -106,13 +106,13 @@
                         <thead>
                             <tr>
                                 <th>Phrases</th>
-
+                                <th>Delete</th>
                             </tr>
                         </thead>   
                             {% for a in phrases %}
                             <tr id="phrases">
                                 <td >{{a}}</td>
-                                <td id="{{a}}"><button type="button" class = "btn btn-default btn-large" >
+                                <td id="{{a}}"><button type="button" class = "btn btn-default btn-large PhraseButton" >
                                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                                     </button>
                                  </td>
