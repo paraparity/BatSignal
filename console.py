@@ -68,7 +68,7 @@ def serveConfig():
                 print(str(form.phrases.data) == "None")
                 if form.admins.data is not None:
                     data['admins'].append(form.admins.data)
-                if !(str(form.phrases.data) == "None"): 
+                if  (str(form.phrases.data) != "None"): 
                     data['phrases'].append(form.phrases.data)
                 f.seek(0)
                 json.dump(data, f, indent=4)
@@ -103,7 +103,10 @@ def getIpAddresses():
     command = "arp -a"
     process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
     output = process.communicate()[0]
-    ips = re.findall(r'[0-9]+(?:\.[0-9]+){3}', str(output))
+    ips= []
+    for line in str(output):
+        if "bat0" in line:
+            ips = re.findall(r'[0-9]+(?:\.[0-9]+){3}', str(output))
     return ips
 
 
