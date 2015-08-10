@@ -32,7 +32,7 @@ def index():
         ip = str(request.form['data'])
         print("Restarting "+ip)
         restartNode(ip)
-        
+
     elif request.method == 'POST' and request.form['category'] == "hostname":
         hostname = str(request.form['data'])
         ipAddress = str(request.form['ip'])
@@ -65,8 +65,11 @@ def serveConfig():
             return redirect(url_for("serveConfig"))
         except KeyError:    
             if form.validate() and removedAdmin is False:
-                data['admins'].append(form.admins.data)
-                data['phrases'].append(form.phrases.data)
+                print(str(form.phrases.data) == "None")
+                if form.admins.data is not None:
+                    data['admins'].append(form.admins.data)
+                if !(str(form.phrases.data) == "None"): 
+                    data['phrases'].append(form.phrases.data)
                 f.seek(0)
                 json.dump(data, f, indent=4)
                 f.close()

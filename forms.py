@@ -5,5 +5,5 @@ from wtforms import validators
 from wtforms.fields.html5 import EmailField
 
 class  updateConfig(Form):
-    admins = EmailField('admins')
-    phrases = TextField('phrases')
+    admins = EmailField('admins', filters = [lambda x: x or None])
+    phrases = TextField('phrases', filters = [lambda x: x or None])
